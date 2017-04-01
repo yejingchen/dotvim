@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/igankevich/mesonic.git
+	branch = master
+	commit = 8047a37af7053cfbaec8c67cd68a7c681881e084
+	parent = f518f18e965bf68928f0a65f4a99424286e3e365
+	cmdver = 0.3.1

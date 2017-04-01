@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/rhysd/vim-color-spring-night.git
+	branch = master
+	commit = 29b2e1cbd36882c9451a72fb16721b321ddafcab
+	parent = aa13ad6b6d1ed394dfc4bf86b55133f1550b3791
+	cmdver = 0.3.1

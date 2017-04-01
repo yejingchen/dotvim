@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/haya14busa/incsearch.vim.git
+	branch = master
+	commit = 52736cdcb4d91af6d6b3d5e272ea8fd8765ab5f6
+	parent = none
+	cmdver = 0.3.1

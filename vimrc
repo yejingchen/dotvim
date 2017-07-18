@@ -37,4 +37,24 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
+" tab-completion candidates
 set wildmenu
+
+" vim-syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" vim-syntastic checkers
+let g:syntastic_c_checkers = ['clang_check']
+let g:syntastic_cpp_checkers = ['clang_check']
+let g:syntastic_rust_checkers = ['cargo']
+
+" rust-racer settings
+set hidden
+let g:racer_cmd = "/usr/bin/racer"
+let g:racer_experimental_completer = 1

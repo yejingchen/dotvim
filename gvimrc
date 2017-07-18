@@ -1,2 +1,2 @@
 colo spring-night
-set guifont=Meslo\ LG\ M\ 10
+set guifont=Iosevka\ 12

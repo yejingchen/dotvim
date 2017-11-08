@@ -7,5 +7,5 @@
 	remote = https://github.com/neomake/neomake.git
 	branch = master
 	commit = a5589334aea8f8eddd9dfb571502e410364dcab2
-	parent = 4053c5f22bf9ed9a84ef72448e17b161729d131b
+	parent = 2437401ef5b2995f1436aa5e1dc48603cf5d4436
 	cmdver = 0.3.1

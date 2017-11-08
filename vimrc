@@ -4,7 +4,7 @@ filetype plugin indent on
 syntax on
 set cindent foldmethod=syntax
 set incsearch hlsearch
-set bg=dark ts=4 sw=4 ruler showcmd nu
+set bg=dark ts=4 sw=4 ruler showcmd nu wildmenu
 set colorcolumn=80
 set mouse=a
 
@@ -36,9 +36,6 @@ let g:clang_use_library = 1 " use clang library instead of executable for code c
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
-
-" tab-completion candidates
-set wildmenu
 
 " rust-racer settings
 set hidden

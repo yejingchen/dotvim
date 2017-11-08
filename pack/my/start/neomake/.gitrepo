@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/neomake/neomake.git
+	branch = master
+	commit = a5589334aea8f8eddd9dfb571502e410364dcab2
+	parent = 4053c5f22bf9ed9a84ef72448e17b161729d131b
+	cmdver = 0.3.1

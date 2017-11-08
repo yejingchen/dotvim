@@ -1,4 +1,4 @@
-Calm Spring Color Scheme for Vim [![Build Status][]](https://travis-ci.org/rhysd/vim-color-spring-night)
+Calm Spring Color Scheme for Vim [![Build Status][]][Travis CI]
 ================================
 
 `spring-night` is a low contrast calm color scheme for Vim. It's colored with deep blue background, shiny yellow foreground and *sakura*:cherry_blossom: text selection.
@@ -57,12 +57,13 @@ let g:airline_theme = 'spring_night'
 You can customize some behaviors of this colorscheme.
 
 - **`g:spring_night_kill_italic`**: If `1`, this colorscheme does not use italic attribute. Default value is `0`.
+- **`g:spring_night_kill_bold`**: If `1`, this colorscheme does not use bold attribute. Default value is `0`.
 - **`g:spring_night_high_contrast`**: List of string. If it includes `'cui'`, it uses high contrast version on Vim in terminal. If it includes `'gui'`, it uses high contrast version on gVim. Default value depends on `termguicolors` option.
 
 
-## Supported Filetypes
+## Optimized Filetypes
 
-This colorscheme is especially optimized for below filetypes/plugins:
+Color layouts are optimized in following filetypes/plugins:
 
 - `c`
 - `cpp`
@@ -73,6 +74,7 @@ This colorscheme is especially optimized for below filetypes/plugins:
 - `html`
 - `javascript`
 - `markdown`
+- `ocaml`
 - `python`
 - `ruby`
 - `rust`
@@ -84,6 +86,8 @@ This colorscheme is especially optimized for below filetypes/plugins:
 - [vim-easymotion][]
 - [clever-f.vim][]
 - [vimfiler.vim][]
+- [ale][]
+- ... and more
 
 ## Contribution
 
@@ -93,30 +97,38 @@ And pull requests are of course welcome :smile:
 For colors palette, please see [the source code directly](https://github.com/rhysd/vim-color-spring-night/blob/master/colors/spring-night.vim).
 The variable definitions are color table of this colorscheme.
 
+## Bonus: Slack Theme
+
+```
+#132132,#3a4b5c,#fedf81,#132132,#8090a0,#fffeeb,#a9dd9d,#a9667a
+```
+
 ## License
 
 Licensed under the MIT license.
 
-    MIT License
+```
+MIT License
 
-    Copyright (c) 2016 rhysd
+Copyright (c) 2016 rhysd
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-    of the Software, and to permit persons to whom the Software is furnished to do so,
-    subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-    LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
-    THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
 [demo page site]: https://rhysd.github.io/vim-color-spring-night
 [vim-airline]: https://github.com/vim-airline/vim-airline
@@ -130,5 +142,7 @@ Licensed under the MIT license.
 [Vim script on Vim (8bit color)]: https://github.com/rhysd/ss/blob/master/vim-color-spring-night/terminal-8bit-vim.jpg?raw=true
 [Go on Vim (8bit color)]: https://github.com/rhysd/ss/blob/master/vim-color-spring-night/terminal-8bit-go.jpg?raw=true
 [Build Status]: https://travis-ci.org/rhysd/vim-color-spring-night.svg?branch=travis
+[Travis CI]: https://travis-ci.org/rhysd/vim-color-spring-night
 [clever-f.vim]: https://github.com/rhysd/clever-f.vim
 [vimfiler.vim]: https://github.com/Shougo/vimfiler.vim
+[ale]: https://github.com/w0rp/ale

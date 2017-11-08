@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/rhysd/vim-color-spring-night.git
 	branch = master
-	commit = 29b2e1cbd36882c9451a72fb16721b321ddafcab
-	parent = aa13ad6b6d1ed394dfc4bf86b55133f1550b3791
+	commit = efeab01ca8ed190d309d51b0839d304c8e238858
+	parent = b12236bb651ac818909c9d1bb6b5dd30312cebe5
 	cmdver = 0.3.1

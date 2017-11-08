@@ -18,6 +18,7 @@ let g:colors_name = 'spring-night'
 let s:gui_running = has('gui_running')
 
 let g:spring_night_kill_italic = get(g:, 'spring_night_kill_italic', 0)
+let g:spring_night_kill_bold = get(g:, 'spring_night_kill_bold', 0)
 let g:spring_night_high_contrast = get(g:, 'spring_night_high_contrast',
             \ !s:gui_running && has('termguicolors') && &termguicolors ?
             \   ['cui'] : [])
@@ -63,9 +64,13 @@ function! s:hi(name, fg, bg, attr) abort
     let ctermfg = has_fg ? ('ctermfg=' . a:fg[1]) : ''
     let ctermbg = has_bg ? ('ctermbg=' . a:bg[1]) : ''
 
-    if type(a:attr) != s:NUMBER_TYPE && !(g:spring_night_kill_italic && a:attr ==# 'italic')
+    let is_italic = a:attr ==# 'italic'
+    let is_bold = a:attr ==# 'bold'
+    if type(a:attr) != s:NUMBER_TYPE &&
+        \ !(g:spring_night_kill_italic && is_italic) &&
+        \ !(g:spring_night_kill_bold && is_bold)
         let attr =  'gui=' . a:attr
-        if a:attr !=# 'italic'
+        if !is_italic
             let attr .= ' cterm=' . a:attr
         endif
     else
@@ -87,14 +92,14 @@ call s:hi('Constant',     s:red,        0,            0)
 call s:hi('Cursor',       s:bg,         s:fg,         0)
 call s:hi('CursorColumn', 0,            s:bgemphasis, 0)
 call s:hi('CursorLineNr', s:purple,     s:bgstrong,   0)
-call s:hi('Cursorline',   0,            s:bgemphasis, 0)
+call s:hi('CursorLine',   0,            s:bgemphasis, 'NONE')
 call s:hi('Define',       s:orange,     0,            0)
 call s:hi('Directory',    s:green,      0,            0)
 call s:hi('EndOfBuffer',  s:bgstrong,   0,            0)
 call s:hi('Error',        s:red,        s:bgemphasis, 'bold')
 call s:hi('ErrorMsg',     s:red,        s:bg,         'bold')
 call s:hi('Float',        s:red,        0,            0)
-call s:hi('FoldColumn',   0,            s:bgemphasis, 0)
+call s:hi('FoldColumn',   s:purple,     s:bgemphasis, 0)
 call s:hi('Folded',       s:purple,     s:light,      0)
 call s:hi('Function',     s:orange,     0,            0)
 call s:hi('Identifier',   s:gold,       0,            'italic')
@@ -137,8 +142,31 @@ call s:hi('VertSplit',    s:bgemphasis, s:bg,         0)
 call s:hi('Visual',       0,            s:sakura,     0)
 call s:hi('WarningMsg',   s:mikan,      s:bgemphasis, 0)
 call s:hi('WildMenu',     0,            s:gold,       0)
+" TODO: call s:hi('QuickFixLine',     0,            0,       0)
 
+" Plugin specific
 "
+" Some plugins introduce its own highlight definitions. Adjust them for
+" working fine with this colorscheme.
+call s:hi('ALEWarningSign',           s:orange,     s:bgemphasis, 'bold')
+call s:hi('ALEErrorSign',             s:bgemphasis, s:mildred,    'bold')
+call s:hi('ALEInfoSign',              0,            s:light,      0)
+call s:hi('ALEError',                 0,            s:mildred,    0)
+call s:hi('ALEWarning',               0,            s:darkgold,   0)
+call s:hi('GitGutterAdd',             s:green,      s:bgemphasis, 0)
+call s:hi('GitGutterChange',          s:yellow,     s:bgemphasis, 0)
+call s:hi('GitGutterChangeDelete',    s:gold,       s:bgemphasis, 0)
+call s:hi('GitGutterDelete',          s:red,        s:bgemphasis, 0)
+call s:hi('EasyMotionTarget',         s:red,        0,            'bold')
+call s:hi('EasyMotionShade',          s:weakfg,     s:bg,         0)
+if s:gui_running
+    call s:hi('EasyMotionIncCursor',  s:bg,         s:fg,         0)
+else
+    " In terminal, cursor color is simply reversed
+    call s:hi('EasyMotionIncCursor',  0,            0,            'reverse')
+endif
+
+
 " Filetype specific
 "
 " Markdown is highlighted with HTML highlights in gVim but link text doesn't
@@ -147,33 +175,30 @@ call s:hi('cmakeArguments',           s:yellow,  0,            0)
 call s:hi('cmakeOperators',           s:red,     0,            0)
 call s:hi('DiffAdd',                  0,         s:darkgreen,  'bold')
 call s:hi('DiffChange',               0,         s:darkgold,   'bold')
-call s:hi('DiffDelete',               0,         s:mildred,    'bold')
+call s:hi('DiffDelete',               s:fg,      s:mildred,    'bold')
 call s:hi('DiffText',                 0,         s:bg,         0)
-call s:hi('GitGutterAdd',             s:green,   s:bgemphasis, 0)
-call s:hi('GitGutterChange',          s:yellow,  s:bgemphasis, 0)
-call s:hi('GitGutterChangeDelete',    s:gold,    s:bgemphasis, 0)
-call s:hi('GitGutterDelete',          s:red,     s:bgemphasis, 0)
 call s:hi('diffAdded',                s:green,   0,            0)
 call s:hi('diffFile',                 s:yellow,  0,            0)
 call s:hi('diffIndexLine',            s:gold,    0,            0)
 call s:hi('diffNewFile',              s:yellow,  0,            0)
 call s:hi('diffRemoved',              s:red,     0,            0)
-call s:hi('EasyMotionTarget',         s:red,     0,            'bold')
-call s:hi('EasyMotionShade',          s:weakfg,  s:bg,         0)
 call s:hi('gitCommitOverflow',        0,         s:red,        0)
 call s:hi('gitCommitSummary',         s:yellow,  0,            0)
 call s:hi('gitCommitSelectedFile',    s:skyblue, 0,            0)
+call s:hi('gitconfigSection',         s:skyblue, 0,            'bold')
 call s:hi('goBuiltins',               s:red,     0,            0)
 call s:hi('helpExample',              s:skyblue, 0,            0)
 call s:hi('htmlBold',                 0,         s:bgemphasis, 0)
 call s:hi('htmlLinkText',             s:skyblue, 0,            0)
 call s:hi('htmlTagName',              s:orange,  0,            0)
 call s:hi('javaScriptBraces',         s:fg,      0,            0)
+call s:hi('makeCommands',             s:yellow,  0,            0)
 call s:hi('markdownCode',             s:yellow,  0,            0)
 call s:hi('markdownUrl',              s:weakfg,  0,            0)
 call s:hi('ocamlConstructor',         s:gold,    0,            0)
 call s:hi('ocamlKeyChar',             s:skyblue, 0,            0)
 call s:hi('ocamlKeyword',             s:gold   , 0,            0)
+call s:hi('ocamlFunDef',              s:skyblue, 0,            0)
 call s:hi('pythonBuiltin',            s:red,     0,            0)
 call s:hi('qfFileName',               s:gold,    0,            0)
 call s:hi('qfLineNr',                 s:skyblue, 0,            0)
@@ -188,10 +213,3 @@ call s:hi('vimCommand',               s:skyblue, 0,            0)
 call s:hi('zshDelimiter',             s:skyblue, 0,            0)
 call s:hi('zshPrecommand',            s:red,     0,            0)
 call s:hi('CleverFChar',              s:bg,      s:red,        0)
-if s:gui_running
-    call s:hi('EasyMotionIncCursor',s:bg,     s:fg,         0)
-else
-    " In terminal, cursor color is simply reversed
-    call s:hi('EasyMotionIncCursor',0,        0,            'reverse')
-endif
-

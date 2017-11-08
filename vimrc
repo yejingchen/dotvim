@@ -2,9 +2,9 @@ source /etc/vimrc
 set nocompatible
 filetype plugin indent on
 syntax on
-set autoindent cindent
+set cindent foldmethod=syntax
 set incsearch hlsearch
-set ts=4 sw=4 ruler showcmd nu
+set bg=dark ts=4 sw=4 ruler showcmd nu
 set colorcolumn=80
 set mouse=a
 
@@ -16,7 +16,7 @@ set cino+=g0 " C++ scope declarations (public, private) 0 indent
 set cino+=N-s " don't indent inside namespaces
 
 " Certain file type syntax highlight
-autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD
+autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD nocindent autoindent smartindent
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
@@ -40,21 +40,17 @@ map g/ <Plug>(incsearch-stay)
 " tab-completion candidates
 set wildmenu
 
-" vim-syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 2
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" vim-syntastic checkers
-let g:syntastic_c_checkers = ['clang_check']
-let g:syntastic_cpp_checkers = ['clang_check']
-let g:syntastic_rust_checkers = ['cargo']
-
 " rust-racer settings
 set hidden
 let g:racer_cmd = "/usr/bin/racer"
 let g:racer_experimental_completer = 1
+
+" rust.vim
+let g_rust_fold = 1
+
+" neomake
+" call neomake#configure#automake('nw', 750) doesn't work, don't know why
+autocmd! BufWritePost,BufEnter * Neomake
+
+" shipped matchit pack
+packadd! matchit

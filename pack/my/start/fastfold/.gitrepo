@@ -7,5 +7,5 @@
 	remote = https://github.com/Konfekt/FastFold.git
 	branch = master
 	commit = 680b65bf2455664f23a2feaa69ccd908d0ad94bc
-	parent = 2467fe13a75caaadce3f06993fe88bd9094871b3
+	parent = 75e91d827de2a4dd22907a3a813e6b4fee37736e
 	cmdver = 0.3.1

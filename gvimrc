@@ -1,2 +1,1 @@
-colo spring-night
-set guifont=Iosevka\ 12
+set guifont=Iosevka\ 13

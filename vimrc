@@ -1,12 +1,15 @@
 source /etc/vimrc
 set nocompatible
 filetype plugin indent on
-syntax on
 set cindent foldmethod=syntax
 set incsearch hlsearch
-set bg=dark ts=4 sw=4 ruler showcmd nu wildmenu
+set ts=4 sw=4 ruler showcmd nu wildmenu
 set colorcolumn=80
 set mouse=a
+
+syntax enable
+set bg=dark 
+colorscheme solarized
 
 " Indentation preferences for C-like sources
 set cino=:0 " the 'case' for switch have same indent as 'switch'
@@ -20,7 +23,7 @@ autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD nocindent autoindent smarti
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
-	\ 'colorscheme' : 'default',
+	\ 'colorscheme' : 'solarized',
 	\ 'component' : {
 		\ 'readonly' : '%{&readonly ? "" : ""}',
 		\ 'fugitive' : '%{exists("*fugitive#head") ? fugitive#head() : ""}'

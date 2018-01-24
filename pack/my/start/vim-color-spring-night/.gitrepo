@@ -7,5 +7,5 @@
 	remote = https://github.com/rhysd/vim-color-spring-night.git
 	branch = master
 	commit = efeab01ca8ed190d309d51b0839d304c8e238858
-	parent = b12236bb651ac818909c9d1bb6b5dd30312cebe5
+	parent = 36018506d8b2f9e2cc6f139410015b51f80e844f
 	cmdver = 0.3.1

@@ -3,13 +3,17 @@ set nocompatible
 filetype plugin indent on
 set cindent foldmethod=syntax
 set incsearch hlsearch
-set ts=4 sw=4 ruler showcmd nu wildmenu
-set colorcolumn=80
+set ts=4 sw=4 ruler showcmd nu wildmenu relativenumber
+set colorcolumn=80 cursorline cursorcolumn
 set mouse=a
+
+nnoremap <Leader>y :%y +<CR>
+nnoremap <Leader>p :put +<CR>
+nnoremap <Leader>P :put! +<CR>
 
 syntax enable
 set bg=dark 
-colorscheme solarized
+"colorscheme solarized
 
 " Indentation preferences for C-like sources
 set cino=:0 " the 'case' for switch have same indent as 'switch'
@@ -23,7 +27,7 @@ autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD nocindent autoindent smarti
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
-	\ 'colorscheme' : 'solarized',
+	\ 'colorscheme' : 'default',
 	\ 'component' : {
 		\ 'readonly' : '%{&readonly ? "" : ""}',
 		\ 'fugitive' : '%{exists("*fugitive#head") ? fugitive#head() : ""}'

@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/junegunn/vim-easy-align.git
+	branch = master
+	commit = 1cd724dc239c3a0f7a12e0fac85945cc3dbe07b0
+	parent = 4104b44714693480c6dc8ce34f520838a1d25269
+	cmdver = 0.3.1

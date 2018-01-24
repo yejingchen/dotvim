@@ -56,7 +56,7 @@ let g_rust_fold = 1
 " call neomake#configure#automake('nw', 750) doesn't work, don't know why
 autocmd! BufWritePost,BufEnter * Neomake
 
-" shipped matchit pack
+" shipped matchit pack, required by vim-textobj-matchit
 packadd! matchit
 
 " FastFold
@@ -64,3 +64,7 @@ nmap zuz <Plug>(FastFoldUpdate)
 let g:fastfold_savehook = 1
 let g:fastfold_fold_command_suffixes =  ['x','X','a','A','o','O','c','C']
 let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
+
+" vim-easy-align, visual & normal mode
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)

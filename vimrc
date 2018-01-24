@@ -68,3 +68,7 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 " vim-easy-align, visual & normal mode
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+" CtrlP
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'

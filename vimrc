@@ -3,7 +3,7 @@ set nocompatible
 filetype plugin indent on
 set cindent foldmethod=syntax
 set incsearch hlsearch
-set ts=4 sw=4 ruler showcmd nu wildmenu relativenumber
+set ts=4 sw=4 ruler showcmd nu wildmenu
 set colorcolumn=80 cursorline cursorcolumn
 set mouse=a
 

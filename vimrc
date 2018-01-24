@@ -50,7 +50,7 @@ let g:racer_cmd = "/usr/bin/racer"
 let g:racer_experimental_completer = 1
 
 " rust.vim
-let g_rust_fold = 1
+let g:rust_fold = 1
 
 " neomake
 " call neomake#configure#automake('nw', 750) doesn't work, don't know why

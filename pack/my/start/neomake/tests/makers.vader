@@ -145,8 +145,7 @@ Execute (Neomake with non-existing maker (configured)):
   AssertNeomakeMessage "Calling Make with options {'ft': 'myft', 'file_mode': 1}.", 3, log_context
   AssertNeomakeMessage 'Maker not found (for filetype myft): nonexisting_custom.', 0, log_context
   AssertNeomakeMessage 'Nothing to make: no enabled file mode makers (filetype=myft).', 3, log_context
-  AssertNeomakeMessage 'Cleaning make info.', 3, log_context
-  AssertEqual len(g:neomake_test_messages), 4
+  AssertEqual len(g:neomake_test_messages), 3
   AssertEqual make_id_before + 1, neomake#GetStatus().last_make_id
   bwipe
 
@@ -431,12 +430,11 @@ Execute (Makers: get_list_entries with sandbox exception):
   let jobinfo.maker.should_throw = 0
   if has('timers')
     AssertNeomakeMessage 'Retrying Timer event in 10ms.', 3
-    sleep 20m
   else
     AssertNeomakeMessage 'Retrying Timer event on CursorHold(I).'
     doautocmd CursorHold
   endif
-  AssertNeomakeMessage 'The get_list_entries method for maker unnamed_maker did not return a list of dicts, but: [1].'
+  NeomakeTestsWaitForMessage 'The get_list_entries method for maker unnamed_maker did not return a list of dicts, but: [1].', 0
 
   AssertEqual len(g:neomake_test_countschanged), 0
   AssertEqual len(g:neomake_test_jobfinished), 1
@@ -482,8 +480,8 @@ Execute (pcall aborts after 3 attempts per job):
 
   AssertNeomakeMessage '\mError during pcall: Vim(bprevious):E48: Not allowed in sandbox:', 3, jobs[0]
   if has('timers')
-    NeomakeTestsWaitForMessage 'Retrying Timer event in 20ms.', 3
-    NeomakeTestsWaitForMessage 'Retrying Timer event in 20ms.', 3
+    NeomakeTestsWaitForMessage 'Retrying Timer event in 20ms.', 3, jobs[0]
+    NeomakeTestsWaitForMessage 'Retrying Timer event in 20ms.', 3, jobs[1]
   else
     AssertNeomakeMessage 'Retrying Timer event on CursorHold(I).'
     AssertNeomakeMessage 'Retrying Timer event on CursorHold(I).'
@@ -589,9 +587,65 @@ Execute (Neomake/Neomake! run ft maker in project mode):
   Neomake! echo_args
   NeomakeTestsWaitForFinishedJobs
   AssertNeomakeMessage 'Running makers: echo_args.'
+  AssertEqual map(getqflist(), 'v:val.text'), ['']
+
+  call neomake#config#set('b:append_file', 1)
+  CallNeomake 0, ['echo_args']
+  AssertNeomakeMessage 'Running makers: echo_args.'
+  AssertNeomakeMessage "Using setting append_file=1 from 'buffer'.", 3
   AssertEqual map(getqflist(), 'v:val.text'), [expand('%:p')]
 
   AssertEqual map(getloclist(0), 'v:val.text'), [expand('%:p')]
 
-  AssertEqual map(copy(g:neomake_test_jobfinished), 'v:val.jobinfo.file_mode'), [1, 0]
+  AssertEqual map(copy(g:neomake_test_jobfinished), 'v:val.jobinfo.file_mode'), [1, 0, 0]
   bwipe
+
+Execute (Maker can pass opts for jobstart/job_start):
+  if NeomakeAsyncTestsSetup()
+    if !has('nvim') && !has('patch-8.0.0902')
+      NeomakeTestsSkip 'Requires patch 8.0.0902 for Vim.'
+    else
+      let maker = {'exe': 'sh', 'args': ['-c', 'echo $TERM']}
+      if has('nvim')
+        let maker.nvim_job_opts = {
+        \ 'pty': 1,
+        \ 'TERM': 'custom-term',
+        \ }
+      else
+        let maker.vim_job_opts = {
+        \ 'pty': 1,
+        \ 'env': {'TERM': 'custom-term'},
+        \ }
+      endif
+
+      CallNeomake 0, [maker]
+      AssertEqual getqflist(), [
+      \ {'lnum': 0, 'bufnr': 0, 'col': 0, 'valid': 0, 'vcol': 0, 'nr': -1,
+      \  'type': 'W', 'pattern': '', 'text': 'custom-term'}]
+    endif
+  endif
+
+Execute (Maker can override output handler via opts for jobstart/job_start):
+  if NeomakeAsyncTestsSetup()
+    let s:output = []
+    function s:on_stdout(job_or_channel, output, ...)
+      let lines = has('nvim') ? a:output[:-2] : split(a:output, '\n')
+      let s:output += lines
+    endfunction
+
+    let maker = {'exe': 'printf', 'args': ['%s\n', 'line1', 'line2']}
+
+    if has('nvim')
+      let maker.nvim_job_opts = {
+      \ 'on_stdout': function('s:on_stdout'),
+      \ }
+    else
+      let maker.vim_job_opts = {
+      \ 'out_cb': function('s:on_stdout'),
+      \ }
+    endif
+
+    CallNeomake 0, [maker]
+    AssertEqual getqflist(), []
+    AssertEqual s:output, ['line1', 'line2']
+  endif

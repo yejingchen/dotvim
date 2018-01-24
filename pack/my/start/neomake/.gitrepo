@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/neomake/neomake.git
 	branch = master
-	commit = a5589334aea8f8eddd9dfb571502e410364dcab2
-	parent = 2437401ef5b2995f1436aa5e1dc48603cf5d4436
+	commit = 928f33cf13dc2606a2a87c4babf9738e597ab13d
+	parent = 32b6f3534da3d794ef048941d0ecfdc2c6023180
 	cmdver = 0.3.1

@@ -339,8 +339,9 @@ function! g:error_maker.postprocess(entry) abort
   let a:entry.lnum = 1
 endfunction
 let g:success_maker = NeomakeTestsCommandMaker('success-maker', 'echo success')
+let g:success_maker.errorformat = '%-Gsuccess'
 let g:true_maker = NeomakeTestsCommandMaker('true-maker', 'true')
-let g:entry_maker = {}
+let g:entry_maker = {'name': 'entry_maker'}
 function! g:entry_maker.get_list_entries(...) abort
   return get(g:, 'neomake_test_getlistentries', [
   \   {'text': 'error', 'lnum': 1, 'type': 'E'}])
@@ -390,6 +391,17 @@ function! NeomakeTestsGetVimMessages()
   return reverse(msgs[0 : idx-1])
 endfunction
 
+function! NeomakeTestsGetMakerWithOutput(func, lines) abort
+  let output_file = tempname()
+  call writefile(a:lines, output_file)
+
+  let maker = call(a:func, [])
+  let maker.exe = &shell
+  let maker.args = [&shellcmdflag, 'cat '.fnameescape(output_file)]
+  let maker.name = printf('%s-mocked', substitute(a:func, '^.*#', '', ''))
+  return maker
+endfunction
+
 function! s:After()
   if exists('#neomake_automake')
     au! neomake_automake
@@ -398,7 +410,7 @@ function! s:After()
   Restore
   unlet! g:expected  " for old Vim with Vader, that does not wrap tests in a function.
 
-  let errors = []
+  let errors = g:neomake_test_errors
 
   " Stop any (non-canceled) jobs.  Canceled jobs might take a while to call the
   " exit handler, but that is OK.
@@ -424,18 +436,17 @@ function! s:After()
   endif
   if !empty(make_info)
     call add(errors, 'make_info is not empty: '.string(make_info))
+    try
+      call neomake#CancelAllMakes(1)
+    catch
+      call add(errors, v:exception)
+    endtry
   endif
   let actions = filter(copy(status.action_queue), '!empty(v:val)')
   if !empty(actions)
     call add(errors, printf('action_queue is not empty: %d entries: %s',
           \ len(actions), string(status.action_queue)))
   endif
-  try
-    NeomakeTestsWaitForRemovedJobs
-  catch
-    call neomake#CancelJobs(1)
-    call add(errors, v:exception)
-  endtry
 
   if exists('#neomake_tests')
     autocmd! neomake_tests
@@ -483,15 +494,11 @@ function! s:After()
     endfor
   endif
 
-  for k in keys(make_info)
-    unlet make_info[k]
-  endfor
-
   " Check that no new global functions are defined.
-  redir => output_func
+  redir => neomake_output_func_after
     silent function /\C^[A-Z]
   redir END
-  let funcs = map(split(output_func, '\n'),
+  let funcs = map(split(neomake_output_func_after, '\n'),
         \ "substitute(v:val, '\\v^function (.*)\\(.*$', '\\1', '')")
   let new_funcs = filter(copy(funcs), 'index(g:neomake_test_funcs_before, v:val) == -1')
   if !empty(new_funcs)

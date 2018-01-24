@@ -144,14 +144,14 @@ Execute (Automake supports custom buffer config):
 
   " Changing buffer config resets tick.
   call neomake#configure#automake_for_buffer({'BufWinEnter': {'delay': 0}}, 0, [g:entry_maker])
+  AssertNeomakeMessage 'automake: resetting tick because of config changes.', 3
   doautocmd BufWinEnter
-  AssertNeomakeMessage 'unnamed_maker: getting entries via get_list_entries.'
+  AssertNeomakeMessage 'entry_maker: getting entries via get_list_entries.'
 
   " Changing buffer options resets tick.
   call neomake#configure#automake_for_buffer({'CursorHold': {'delay': 0}}, 0, [g:entry_maker])
   doautocmd CursorHold
-  AssertNeomakeMessage 'unnamed_maker: getting entries via get_list_entries.'
-
+  AssertNeomakeMessage 'entry_maker: getting entries via get_list_entries.'
   bwipe
 
 Execute (Automake config via dict):
@@ -214,15 +214,19 @@ Execute (Automake):
   AssertNeomakeMessage 'Maker not found (for filetype neomake_tests): nonexisting.', 3
   AssertNeomakeMessage 'Exe (maker_without_exe) of auto-configured maker maker_without_exe is not executable, skipping.'
   AssertNeomakeMessage 'automake: configured buffer for ft=neomake_tests (no enabled makers).', 3
+  AssertNeomakeMessage 'automake: setting tick for new buffer.', 3
+  AssertNeomakeMessage 'automake: no enabled makers.', 3
 
   " TODO: better to have automake.ft.neomake_tests.enabled_makers ?!
   call neomake#config#set('ft.neomake_tests.automake.enabled_makers', ['true'])
   doautocmd FileType
-  AssertNeomakeMessage 'automake: configured buffer for ft=neomake_tests (true (global)).'
+  AssertNeomakeMessage 'automake: configured buffer for ft=neomake_tests (true (global)).', 3
+  AssertNeomakeMessage 'automake: resetting tick because of registration changes.', 3
   NeomakeTestsWaitForFinishedJobs
   AssertEqual len(g:neomake_test_jobfinished), 0
 
   doautocmd InsertLeave
+  NeomakeTestsWaitForFinishedJobs
   AssertNeomakeMessage 'automake: tick changed (new).', 3, {'bufnr': bufnr}
   if has('timers')
     NeomakeTestsWaitForNextFinishedJob
@@ -439,6 +443,54 @@ Execute (neomake#configure#automake_for_buffer can configure makers (list)):
   AssertNeomakeMessage 'automake: registered events: FileChangedShellPost, FileType, BufWinEnter.', 3
   bwipe
 
+Execute (neomake#configure#automake_for_buffer can configure makers (buffer var)):
+  new
+  set filetype=myft
+  let b:neomake_myft_my_maker_maker = {'name': 'my_maker', 'exe': 'true'}
+  call neomake#configure#automake_for_buffer('n', 300, ['my_maker'])
+  AssertNeomakeMessage 'automake: configured buffer for ft=myft (my_maker (options)).', 3
+
+  let b:neomake_myft_my_other_maker_maker = {'name': 'my_other_maker', 'exe': 'true'}
+  call neomake#configure#automake_for_buffer('n', 300, {'makers': ['my_other_maker']})
+  AssertNeomakeMessage 'automake: configured buffer for ft=myft (my_other_maker (options)).', 3
+  bwipe
+
+Execute (neomake#configure#automake_for_buffer can configure other buffers):
+  let maker = {'name': 'my_maker', 'exe': 'true'}
+  new
+  let bufnr = bufnr('%')
+  call neomake#configure#automake_for_buffer('n', 300, {'makers': [maker], 'bufnr': bufnr})
+  AssertNeomakeMessage 'automake: configured buffer for ft= (my_maker (options)).', 3, {'bufnr': bufnr}
+
+  " Configuration for another buffer.
+  let my_other_maker = {'name': 'my_other_maker', 'exe': 'true'}
+  new
+  call neomake#configure#automake_for_buffer('n', 300, {'makers': [my_other_maker], 'bufnr': bufnr})
+  Assert !exists('b:neomake')
+  bwipe
+  AssertNeomakeMessage 'automake: configured buffer for ft= (my_other_maker (options)).', 3, {'bufnr': bufnr}
+  bwipe
+
+Execute (neomake#configure#automake_for_buffer re-uses configured makers):
+  Save g:neomake
+  new
+  call neomake#configure#automake_for_buffer({'InsertLeave': {'delay': 0}}, 0, [g:entry_maker])
+  AssertNeomakeMessage 'automake: configured buffer for ft= (entry_maker (options)).', 3
+  AssertNeomakeMessage 'automake: resetting tick because of config changes.', 3
+  doautocmd InsertLeave
+  AssertNeomakeMessage 'entry_maker: getting entries via get_list_entries.', 2
+
+  call neomake#configure#automake_for_buffer({'InsertLeave': {'delay': 0}}, 0, [g:true_maker])
+  AssertNeomakeMessage 'automake: resetting tick because of registration changes.', 3
+  doautocmd InsertLeave
+  AssertNeomakeMessage 'Running makers: true-maker.', 3
+  NeomakeTestsWaitForFinishedJobs
+
+  let len_before = len(g:neomake_test_messages)
+  doautocmd FileType
+  AssertEqual len_before, len(g:neomake_test_messages), 'Nothing happened.'
+  bwipe
+
 Execute (Automake handles unchanged buffer):
   " XXX: run for all?!
   if !has('timers')
@@ -615,6 +667,49 @@ Execute (Automake restarts if context changed):
     bwipe!
   endif
 
+Execute (Automake restarts if popup menu is visible):
+  if !has('timers')
+    NeomakeTestsSkip 'only with timers feature'
+  else
+    new
+    file file_sleep_efm
+    set filetype=neomake_tests
+    let b:neomake_enabled_makers = [g:true_maker]
+    call append(0, ['word1', 'word2'])
+
+    function s:close_pum(...)
+      call feedkeys("\<c-e>\<esc>")
+    endfunction
+
+    call neomake#configure#automake_for_buffer({'CursorHold': {'delay': 5}})
+    doautocmd CursorHold
+    AssertNeomakeMessage '\vautomake: started timer \(5ms\): (\d+)'
+    let base_timer = g:neomake_test_matchlist[1]
+
+    " Trigger popup menu.
+    call timer_start(100, 's:close_pum')
+    call feedkeys("oword\<C-p>", 'x!')
+
+    AssertNeomakeMessage 'automake: callback for timer '.base_timer.' (via CursorHold).'
+    AssertNeomakeMessage 'automake: postponing automake during completion.', 3
+    AssertNeomakeMessage 'automake: re-starting postponed automake.'
+    AssertNeomakeMessage 'automake: tick changed (new).'
+    " +2 since we use timer_start above.
+    AssertNeomakeMessage 'automake: started timer (5ms): '.(base_timer + 2).'.'
+    NeomakeTestsWaitForMessage 'automake: callback for timer '.(base_timer + 2).' (via CursorHold).'
+    AssertNeomakeMessage "automake: context/position changed: [[0, 4, 5, 0], 'i'] => [[0, 4, 4, 0], 'n']."
+    AssertNeomakeMessage 'automake: tick changed (new).'
+    AssertNeomakeMessage 'automake: started timer (5ms): '.(base_timer + 3).'.'
+    AssertNeomakeMessage 'automake: neomake_do_automake: CursorHold.'
+    AssertNeomakeMessage 'automake: tick changed (new).'
+    AssertNeomakeMessage '\vautomake: Updating tick: \d+.'
+    AssertNeomakeMessage 'automake: enabled makers: true-maker.'
+
+    NeomakeTestsWaitForFinishedJobs
+
+    bwipe!
+  endif
+
 Execute (Timer callback ignores wiped buffer):
   if !has('timers')
     NeomakeTestsSkip 'only with timers feature'
@@ -683,34 +778,6 @@ Execute (Handles timeout in another buffer):
     AssertEqual len(g:neomake_test_finished), 0
     bwipe!
   endif
-
-Execute (neomake#configure#automake_for_buffer can configure makers (buffer var)):
-  new
-  set filetype=myft
-  let b:neomake_myft_my_maker_maker = {'name': 'my_maker', 'exe': 'true'}
-  call neomake#configure#automake_for_buffer('n', 300, ['my_maker'])
-  AssertNeomakeMessage 'automake: configured buffer for ft=myft (my_maker (options)).', 3
-
-  let b:neomake_myft_my_other_maker_maker = {'name': 'my_other_maker', 'exe': 'true'}
-  call neomake#configure#automake_for_buffer('n', 300, {'makers': ['my_other_maker']})
-  AssertNeomakeMessage 'automake: configured buffer for ft=myft (my_other_maker (options)).', 3
-  bwipe
-
-Execute (neomake#configure#automake_for_buffer can configure other buffers):
-  let maker = {'name': 'my_maker', 'exe': 'true'}
-  new
-  let bufnr = bufnr('%')
-  call neomake#configure#automake_for_buffer('n', 300, {'makers': [maker], 'bufnr': bufnr})
-  AssertNeomakeMessage 'automake: configured buffer for ft= (my_maker (options)).', 3, {'bufnr': bufnr}
-
-  " Configuration for another buffer.
-  let my_other_maker = {'name': 'my_other_maker', 'exe': 'true'}
-  new
-  call neomake#configure#automake_for_buffer('n', 300, {'makers': [my_other_maker], 'bufnr': bufnr})
-  Assert !exists('b:neomake')
-  bwipe
-  AssertNeomakeMessage 'automake: configured buffer for ft= (my_other_maker (options)).', 3, {'bufnr': bufnr}
-  bwipe
 
 Execute (Error with non-existing configured maker):
   new

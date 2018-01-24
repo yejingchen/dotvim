@@ -20,8 +20,22 @@ function! neomake#makers#ft#python#EnabledMakers() abort
     return makers
 endfunction
 
+let neomake#makers#ft#python#project_root_files = ['setup.cfg', 'tox.ini']
+
+function! neomake#makers#ft#python#DetectPythonVersion() abort
+    let output = neomake#compat#systemlist('python -V 2>&1')
+    if v:shell_error
+        call neomake#utils#ErrorMessage(printf(
+                    \ 'Failed to detect Python version: %s.',
+                    \ join(output)))
+        let s:python_version = [-1, -1, -1]
+    else
+        let s:python_version = split(split(output[0])[1], '\.')
+    endif
+endfunction
+
 function! neomake#makers#ft#python#pylint() abort
-    return {
+    let maker = {
         \ 'args': [
             \ '--output-format=text',
             \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg} [{msg_id}]"',
@@ -35,9 +49,15 @@ function! neomake#makers#ft#python#pylint() abort
             \ '%-G%.%#',
         \ 'output_stream': 'stdout',
         \ 'postprocess': [
-        \   function('neomake#postprocess#GenericLengthPostprocess'),
+        \   function('neomake#postprocess#generic_length'),
         \   function('neomake#makers#ft#python#PylintEntryProcess'),
         \ ]}
+    function! maker.filter_output(lines, context) abort
+        if a:context.source ==# 'stderr'
+            call filter(a:lines, "v:val !=# 'No config file found, using default configuration' && v:val !~# '^Using config file '")
+        endif
+    endfunction
+    return maker
 endfunction
 
 function! neomake#makers#ft#python#PylintEntryProcess(entry) abort
@@ -73,10 +93,12 @@ function! neomake#makers#ft#python#flake8() abort
         \ 'short_name': 'fl8',
         \ }
 
+    " @vimlint(EVL103, 1, a:jobinfo)
     function! maker.supports_stdin(jobinfo) abort
         let self.args += ['--stdin-display-name', bufname('%')]
         return 1
     endfunction
+    " @vimlint(EVL103, 0, a:jobinfo)
     return maker
 endfunction
 
@@ -208,7 +230,7 @@ function! neomake#makers#ft#python#pydocstyle() abort
         \ 'errorformat':
         \   '%W%f:%l %.%#:,' .
         \   '%+C        %m',
-        \ 'postprocess': function('neomake#utils#CompressWhitespace'),
+        \ 'postprocess': function('neomake#postprocess#compress_whitespace'),
         \ }
 endfunction
 
@@ -290,9 +312,9 @@ function! neomake#makers#ft#python#mypy() abort
 
     " Append '--py2' to args with Python 2 for Python 2 mode.
     if !exists('s:python_version')
-        let s:python_version = split(split(system('python -V 2>&1'))[1], '\.')
+        call neomake#makers#ft#python#DetectPythonVersion()
     endif
-    if !v:shell_error && s:python_version[0] ==# '2'
+    if s:python_version[0] ==# '2'
         call add(l:args, '--py2')
     endif
 

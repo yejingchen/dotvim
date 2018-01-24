@@ -1,6 +1,9 @@
 Include: include/setup.vader
 
 Execute (Neomake uses temporary file for unsaved buffer):
+  Save g:neomake_verbose
+  let g:neomake_verbose = 3
+
   new
   norm iline1
   norm oline2
@@ -21,7 +24,7 @@ Execute (Neomake uses temporary file for unsaved buffer):
     NeomakeTestsWaitForFinishedJobs
   endif
 
-  AssertNeomakeMessage 'Skipped 2 entries without bufnr.'
+  AssertNeomakeMessage '\vSkipped 2 entries without bufnr: .*\.', 3
 
   AssertEqual getloclist(0), [{
   \ 'lnum': 0,
@@ -412,7 +415,7 @@ Execute (Temporary buffer is not wiped if opened):
   let bufnr = bufnr('%')
   let tempfile_bufnr = bufnr + 1
   let b:neomake_tempfile_enabled = 1
-  call neomake#Make(1, [maker])
+  let jobinfo = neomake#Make({'enabled_makers': [maker]})[0]
 
   " Open the tempfile in a new buffer.
   new
@@ -491,7 +494,6 @@ Execute (stdin maker):
   AssertNeomakeMessage '\mstdout: unnamed_maker: [''file1.test:line1.*'
   AssertEqual map(getloclist(0), 'v:val.text'), ['line1', 'line2']
   bwipe!
-  bwipe file1.test
 
 Execute (stdin maker (args as string)):
   let maker = {'exe': 'cat', 'args': '', 'supports_stdin': 1, 'errorformat': '%f:%m'}
@@ -505,14 +507,14 @@ Execute (stdin maker (args as string)):
     if has('nvim')
       AssertNeomakeMessage "Starting async job: 'cat \\-'.", 2
     else
-      AssertNeomakeMessage "Starting async job: ['/bin/bash', '-c', 'cat \\-'].", 2
+      let shell_argv = "'".join(split(&shell) + split(&shellcmdflag), "', '")."'"
+      AssertNeomakeMessage "Starting async job: [".shell_argv.", 'cat \\-'].", 2
     endif
     NeomakeTestsWaitForFinishedJobs
   endif
   AssertNeomakeMessage '\mstdout: unnamed_maker: [''file1.test:line1.*'
   AssertEqual map(getloclist(0), 'v:val.text'), ['line1', 'line2']
   bwipe!
-  bwipe file1.test
 
 Execute (stdin maker (disabled tempfiles)):
   let maker = {'exe': 'cat', 'supports_stdin': 1, 'tempfile_name': '-'}
@@ -522,7 +524,7 @@ Execute (stdin maker (disabled tempfiles)):
   normal! iline1
   normal! oline2
   call neomake#Make(1, [maker])
-  AssertNeomakeMessage 'Using tempfile for unnamed buffer: "-".'
+  AssertNeomakeMessage 'Using stdin for unnamed buffer.'
   if neomake#has_async_support()
     AssertNeomakeMessage "Starting async job: ['cat', '-'].", 2
     NeomakeTestsWaitForFinishedJobs
@@ -561,12 +563,13 @@ Execute (stdin maker (project mode: uses_filename)):
   normal! iline1
   normal! oline2
   call neomake#Make(0, [maker])
-  AssertNeomakeMessage 'Using tempfile for unnamed buffer: "-".'
+  AssertNeomakeMessage 'Using stdin for unnamed buffer.'
   if neomake#has_async_support()
     if has('nvim')
       AssertNeomakeMessage "Starting async job: 'cat $NEOMAKE_FILE'.", 2
     else
-      AssertNeomakeMessage "Starting async job: ['/bin/bash', '-c', 'cat $NEOMAKE_FILE'].", 2
+      let shell_argv = "'".join(split(&shell) + split(&shellcmdflag), "', '")."'"
+      AssertNeomakeMessage "Starting async job: [".shell_argv.", 'cat $NEOMAKE_FILE'].", 2
     endif
     NeomakeTestsWaitForFinishedJobs
   else
@@ -585,7 +588,7 @@ Execute (stdin maker: supports_stdin can be a callback adding args):
   new
   set buftype=nofile
   CallNeomake 1, [maker]
-  AssertNeomakeMessage 'Using tempfile for unnamed buffer: "-".'
+  AssertNeomakeMessage 'Using stdin for unnamed buffer.'
   AssertEqual map(getloclist(0), 'v:val.text'), ['added_arg', '-']
   bwipe
 
@@ -599,7 +602,7 @@ Execute (stdin maker: supports_stdin can be a callback adding args, and setting 
   new
   set buftype=nofile
   CallNeomake 1, [maker]
-  AssertNeomakeMessage 'Using tempfile for unnamed buffer: "custom_tempfile".'
+  AssertNeomakeMessage 'Using stdin for unnamed buffer.'
   AssertEqual map(getloclist(0), 'v:val.text'), ['added_arg', 'custom_tempfile']
   bwipe
 
@@ -650,8 +653,8 @@ Execute (Uses temporary dir for non-writable directory):
   let b:neomake_tempfile_enabled = 1
   norm! iline1
   CallNeomake 1, [extend(copy(g:true_maker), {'uses_filename': 1})]
-  AssertNeomakeMessage 'Running makers: true-maker.', 3
   AssertNeomakeMessage 'Using temporary directory for non-writable parent directory.', 3
+  AssertNeomakeMessage 'Running makers: true-maker.', 3
   bwipe!
 
 Execute (Expands % in cwd according to actual file):

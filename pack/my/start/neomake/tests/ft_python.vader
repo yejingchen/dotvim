@@ -3,6 +3,7 @@ Include: include/setup.vader
 Execute (python: errorformat):
   new
   e tests/fixtures/errors.py
+  call neomake#config#set('b:ft.python.python.exe', 'python3')
   Neomake python
   NeomakeTestsWaitForFinishedJobs
 
@@ -178,3 +179,45 @@ Execute (python: pylint):
   call neomake#makers#ft#python#PylintEntryProcess(entry)
   AssertEqual entry.type, 'I'
   AssertEqual entry.col, 2
+
+Execute (python: pylint: filters expected msgs on stderr):
+  let stderr = [
+  \ 'No config file found, using default configuration',
+  \ 'Using config file /Users/liyong/.pylintrc',
+  \ 'Some unexpected error',
+  \ ]
+  let maker = neomake#GetMaker('pylint', 'python')
+  let output = copy(stderr)
+  call maker.filter_output(output, {'source': 'stderr'})
+  AssertEqual output, [
+  \ 'Some unexpected error',
+  \ ]
+  let output = copy(stderr)
+  call maker.filter_output(output, {'source': 'stdout'})
+  AssertEqual output, [
+  \ 'No config file found, using default configuration',
+  \ 'Using config file /Users/liyong/.pylintrc',
+  \ 'Some unexpected error',
+  \ ]
+
+Execute (python: mypy: handles --py2):
+  call g:NeomakeTestsSetPATH('')
+  let base_args = ['--check-untyped-defs', '--ignore-missing-imports']
+
+  " Defaults to py3.
+  call neomake#makers#ft#python#DetectPythonVersion()
+  let maker = neomake#makers#ft#python#mypy()
+  AssertEqual maker.args, base_args
+  AssertNeomakeMessage '\v^Failed to detect Python version: .*', 0
+
+  " Appends --py2 with Python 2.
+  call g:NeomakeTestsCreateExe('python', ['#!/bin/sh', 'echo Python 2.7.14'])
+  call neomake#makers#ft#python#DetectPythonVersion()
+  let maker = neomake#makers#ft#python#mypy()
+  AssertEqual maker.args, base_args + ['--py2']
+
+  " Does not append --py2 with Python 3.
+  call g:NeomakeTestsCreateExe('python', ['#!/bin/sh', 'echo Python 3.6.4'])
+  call neomake#makers#ft#python#DetectPythonVersion()
+  let maker = neomake#makers#ft#python#mypy()
+  AssertEqual maker.args, base_args

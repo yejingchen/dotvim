@@ -70,6 +70,7 @@ let g:ale_linters =  {
 	\ 'c': ['clang'],
 	\ 'cpp': ['clang'],
 	\ }
+let g:ale_rust_rls_toolchain = 'stable'
 
 " helptags
 "silent! helptags ALL

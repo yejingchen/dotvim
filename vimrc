@@ -90,7 +90,8 @@ let g:ale_linters =  {
 	\ 'c': ['clang'],
 	\ 'cpp': ['clang'],
 	\ }
-let g:ale_rust_rls_toolchain = 'stable'
+"let g:ale_rust_rls_toolchain = 'stable'
+autocmd FileType rust nmap <C-]> <Plug>(ale_go_to_definition)
 
 " helptags
 "silent! helptags ALL

@@ -52,10 +52,6 @@ let g:racer_experimental_completer = 1
 " rust.vim
 let g:rust_fold = 1
 
-" neomake
-" call neomake#configure#automake('nw', 750) doesn't work, don't know why
-autocmd! BufWritePost,BufEnter * Neomake
-
 " shipped matchit pack, required by vim-textobj-matchit
 packadd! matchit
 

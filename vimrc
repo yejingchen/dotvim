@@ -44,11 +44,6 @@ map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
-" rust-racer settings
-set hidden
-let g:racer_cmd = "/usr/bin/racer"
-let g:racer_experimental_completer = 1
-
 " rust.vim
 let g:rust_fold = 1
 
@@ -68,3 +63,6 @@ nmap ga <Plug>(EasyAlign)
 " CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
+" helptags
+"silent! helptags ALL

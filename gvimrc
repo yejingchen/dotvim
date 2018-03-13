@@ -1,2 +1,2 @@
 colo solarized
-set guifont=Iosevka\ 13
+set bg=light guifont=Sarasa\ Mono\ SC\ 13

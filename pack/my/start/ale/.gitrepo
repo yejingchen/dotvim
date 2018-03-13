@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/w0rp/ale.git
+	branch = master
+	commit = 05d39bc1a9eb79ff6f36b190b4612ff052812e7e
+	parent = f8d7be7eb45b14f8f92187dd763d2a2e549390eb
+	cmdver = 0.3.1

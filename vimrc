@@ -64,5 +64,12 @@ nmap ga <Plug>(EasyAlign)
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
+" ALE
+let g:ale_linters =  {
+	\ 'rust': ['rls'],
+	\ 'c': ['clang'],
+	\ 'cpp': ['clang'],
+	\ }
+
 " helptags
 "silent! helptags ALL

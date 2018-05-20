@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/ctrlpvim/ctrlp.vim.git
 	branch = master
-	commit = 88abbcb926a415b789ff648cbdc86ed4b353bfc1
-	parent = a0fdb59a395ef7027c22069e0532d620bb827fe4
+	commit = 4b9e7cac612902a25498cca49f13475fe1a821a4
+	parent = d1c9f0ba13277f86ad3bcdb3a7175f4fca632669
 	cmdver = 0.3.1

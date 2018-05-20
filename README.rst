@@ -4,5 +4,5 @@
 
 My Vim and GVim configurations. Vim 8 packages utilized.
 
-Using `git-subrepo <https://github.com/ingydotnet/git-subrepo>`_ to manage
-packages tracked by git.
+Using `vim-plug <https://github.com/junegunn/vim-plug>`_ to manage
+packages.

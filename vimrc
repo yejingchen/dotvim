@@ -25,6 +25,32 @@ set cino+=N-s " don't indent inside namespaces
 " Certain file type syntax highlight
 autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD nocindent autoindent smartindent
 
+" load the shipped man plugin
+runtime ftplugin/man.vim
+
+" shipped matchit pack, required by vim-textobj-matchit
+packadd! matchit
+
+" YACC C++
+let g:yacc_uses_cpp = 1
+autocmd BufNewFile,BufRead *.ypp set ft=yacc
+autocmd BufNewFile,BufRead *.y++ set ft=yacc
+
+" BEGIN vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'w0rp/ale'
+Plug 'Konfekt/FastFold'
+Plug 'junegunn/vim-easy-align'
+Plug 'easymotion/vim-easymotion'
+Plug 'altercation/vim-colors-solarized'
+Plug 'airblade/vim-gitgutter'
+Plug 'kana/vim-textobj-user'
+Plug 'adriaanzon/vim-textobj-matchit'
+Plug 'igankevich/mesonic'
+Plug 'itchyny/lightline.vim'
+Plug 'majutsushi/tagbar'
+call plug#end()
+
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
 	\ 'colorscheme' : 'default',
@@ -55,15 +81,10 @@ function! s:lightline_update()
 	endtry
 endfunction
 
-
-runtime ftplugin/man.vim " load the shipped man plugin
 let g:clang_use_library = 1 " use clang library instead of executable for code completion
 
 " rust.vim
 let g:rust_fold = 1
-
-" shipped matchit pack, required by vim-textobj-matchit
-packadd! matchit
 
 " FastFold
 nmap zuz <Plug>(FastFoldUpdate)
@@ -88,11 +109,3 @@ let g:ale_linters =  {
 "
 "let g:ale_rust_rls_toolchain = 'stable'
 autocmd FileType rust nmap <C-]> <Plug>(ale_go_to_definition)
-
-" YACC C++
-let g:yacc_uses_cpp = 1
-autocmd BufNewFile,BufRead *.ypp set ft=yacc
-autocmd BufNewFile,BufRead *.y++ set ft=yacc
-
-" helptags
-"silent! helptags ALL

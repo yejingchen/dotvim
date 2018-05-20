@@ -12,7 +12,7 @@ nnoremap <Leader>p :put +<CR>
 nnoremap <Leader>P :put! +<CR>
 
 syntax enable
-set bg=dark 
+"set bg=dark
 "colorscheme solarized
 
 " Indentation preferences for C-like sources
@@ -90,8 +90,14 @@ let g:ale_linters =  {
 	\ 'c': ['clang'],
 	\ 'cpp': ['clang'],
 	\ }
+"
 "let g:ale_rust_rls_toolchain = 'stable'
 autocmd FileType rust nmap <C-]> <Plug>(ale_go_to_definition)
+
+" YACC C++
+let g:yacc_uses_cpp = 1
+autocmd BufNewFile,BufRead *.ypp set ft=yacc
+autocmd BufNewFile,BufRead *.y++ set ft=yacc
 
 " helptags
 "silent! helptags ALL

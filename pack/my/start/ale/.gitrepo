@@ -7,5 +7,5 @@
 	remote = https://github.com/w0rp/ale.git
 	branch = master
 	commit = d8d13ef264340113b74a3310a203416f2916b2f5
-	parent = 8c1d65815a5089e4a32bdcdb7bffa4f428881e3a
+	parent = abb2f41113fb1b6671e21c6e982bf4bf09e3cf9e
 	cmdver = 0.3.1

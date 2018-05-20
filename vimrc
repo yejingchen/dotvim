@@ -59,11 +59,6 @@ endfunction
 runtime ftplugin/man.vim " load the shipped man plugin
 let g:clang_use_library = 1 " use clang library instead of executable for code completion
 
-" incsearch.vim
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-
 " rust.vim
 let g:rust_fold = 1
 

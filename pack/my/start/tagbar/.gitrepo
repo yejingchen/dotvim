@@ -7,5 +7,5 @@
 	remote = https://github.com/majutsushi/tagbar.git
 	branch = master
 	commit = 387bbadda98e1376ff3871aa461b1f0abd4ece70
-	parent = 31cc773d426562eb37dbd049dad8f29cb5b25036
+	parent = 85f0879b0ce917bea6e5b14f5a166b0aaefc7c77
 	cmdver = 0.3.1

@@ -7,5 +7,5 @@
 	remote = https://github.com/junegunn/vim-easy-align.git
 	branch = master
 	commit = 1cd724dc239c3a0f7a12e0fac85945cc3dbe07b0
-	parent = 4104b44714693480c6dc8ce34f520838a1d25269
+	parent = 20655008df10944d3aa8b03cd00ffd7605f6bfd9
 	cmdver = 0.3.1

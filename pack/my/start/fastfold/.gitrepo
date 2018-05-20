@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/Konfekt/FastFold.git
+	branch = master
+	commit = 720b30fefdde2a4a55cf5a950ce12a069f625e30
+	parent = 0c8f4261bb6c4d97e47b385b304531f639ab4083
+	cmdver = 0.3.1

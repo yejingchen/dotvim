@@ -7,5 +7,5 @@
 	remote = https://github.com/adriaanzon/vim-textobj-matchit.git
 	branch = master
 	commit = 14b16f487c8337c0afa361b525a1798a20bf4bd2
-	parent = 24b17382794f36c6611dc5450a40e8ad6bd02af7
+	parent = 0e974cf2c67d4606d2f2028c224d8d79fd902849
 	cmdver = 0.3.1

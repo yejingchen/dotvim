@@ -96,10 +96,6 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
 " ALE
 let g:ale_linters =  {
 	\ 'rust': ['rls'],

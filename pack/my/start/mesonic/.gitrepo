@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/igankevich/mesonic.git
 	branch = master
-	commit = 45b3a28b683ff9d493128e7f4e986bd396839d19
-	parent = 280ddd851a3378d70c1da72a0e4abce126f16bdc
+	commit = d794b44981237b12878b314caeb660aedc1b5e04
+	parent = 2093bff2c48b677fbcead09f0d978c9cb03a25da
 	cmdver = 0.3.1

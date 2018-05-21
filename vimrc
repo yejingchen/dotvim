@@ -49,6 +49,7 @@ Plug 'adriaanzon/vim-textobj-matchit'
 Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
 Plug 'majutsushi/tagbar'
+Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -105,3 +106,11 @@ let g:ale_linters =  {
 "
 "let g:ale_rust_rls_toolchain = 'stable'
 autocmd FileType rust nmap <C-]> <Plug>(ale_go_to_definition)
+
+" fzf: enable Rg command
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)

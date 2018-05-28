@@ -6,14 +6,12 @@ set incsearch hlsearch
 set ts=4 sw=4 ruler showcmd nu wildmenu
 set colorcolumn=80 cursorline
 set mouse=a
+syntax enable
+"set bg=dark
 
 nnoremap <Leader>y :%y +<CR>
 nnoremap <Leader>p :put +<CR>
 nnoremap <Leader>P :put! +<CR>
-
-syntax enable
-"set bg=dark
-"colorscheme solarized
 
 " Indentation preferences for C-like sources
 set cino=:0 " the 'case' for switch have same indent as 'switch'
@@ -50,14 +48,22 @@ Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
 	\ 'colorscheme' : 'default',
+	\ 'active': {
+		\ 'left': [ [ 'mode', 'paste' ],
+		\			[ 'readonly', 'fugitive', 'filename', 'modified' ] ]
+	\ },
 	\ 'component' : {
 		\ 'readonly' : '%{&readonly ? "" : ""}',
-		\ 'fugitive' : '%{exists("*fugitive#head") ? fugitive#head() : ""}'
+		\ 'fugitive' : '%{!empty(fugitive#head()) ? "git:".fugitive#head() : ""}'
 		\ },
 	\ 'separator' : { 'left': '', 'right': '' },
 	\ 'subseparator' : { 'left': '', 'right': '' }
@@ -98,14 +104,11 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " ALE
-let g:ale_linters =  {
+let g:ale_linters = {
 	\ 'rust': ['rls'],
 	\ 'c': ['clang'],
 	\ 'cpp': ['clang'],
 	\ }
-"
-"let g:ale_rust_rls_toolchain = 'stable'
-autocmd FileType rust nmap <C-]> <Plug>(ale_go_to_definition)
 
 " fzf: enable Rg command
 command! -bang -nargs=* Rg
@@ -114,3 +117,18 @@ command! -bang -nargs=* Rg
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+" LanguageClient-neovim
+let g:LanguageClient_serverCommands = {
+	\ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+	\ }
+augroup lsp_rust
+	au FileType rust let g:LanguageClient_diagnosticsEnable = 0 " use ALE linting for rust
+	au FileType rust nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+	au FileType rust nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+	au FileType rust nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+	au FileType rust nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
+	au FileType rust nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
+	au FileType rust nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+	au FileType rust nmap <C-]> :call LanguageClient#textDocument_definition()<CR>
+augroup END

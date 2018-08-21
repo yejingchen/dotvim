@@ -1,14 +1,14 @@
 source /etc/vimrc
 set nocompatible
 filetype plugin indent on
-set cindent foldmethod=syntax
 set incsearch hlsearch
 set ts=4 sw=4 ruler showcmd nu wildmenu
-set colorcolumn=80 cursorline
+set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
 "set bg=dark
 
+" GUI clipboard
 nnoremap <Leader>y :%y +<CR>
 nnoremap <Leader>p :put +<CR>
 nnoremap <Leader>P :put! +<CR>
@@ -21,7 +21,7 @@ set cino+=g0 " C++ scope declarations (public, private) 0 indent
 set cino+=N-s " don't indent inside namespaces
 
 " Certain file type syntax highlight
-autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD nocindent autoindent smartindent
+autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD autoindent smartindent
 
 " load the shipped man plugin
 runtime ftplugin/man.vim
@@ -50,7 +50,7 @@ Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
+    \ 'do': 'make release',
     \ }
 call plug#end()
 
@@ -132,3 +132,6 @@ augroup lsp_rust
 	au FileType rust nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 	au FileType rust nmap <C-]> :call LanguageClient#textDocument_definition()<CR>
 augroup END
+let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
+let g:LanguageClient_loggingLevel = 'INFO'
+let g:LanguageClient_serverStderr = '/tmp/LanguageServer.log'

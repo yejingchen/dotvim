@@ -1,8 +1,7 @@
 source /etc/vimrc
-set nocompatible
 filetype plugin indent on
 set incsearch hlsearch
-set ts=4 sw=4 ruler showcmd nu wildmenu
+set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
@@ -14,14 +13,17 @@ nnoremap <Leader>p :put +<CR>
 nnoremap <Leader>P :put! +<CR>
 
 " Indentation preferences for C-like sources
-set cino=:0 " the 'case' for switch have same indent as 'switch'
-set cino+=t0 " don't indent return type above function declaration/definition
-set cino+=l1 " case block aligns according to 'case'
-set cino+=g0 " C++ scope declarations (public, private) 0 indent
-set cino+=N-s " don't indent inside namespaces
+set cinoptions=:0 " 'case' for switch have same indent as 'switch'
+set cinoptions+=t0 " don't indent return type in function declaration/definition
+set cinoptions+=l1 " case block aligns according to 'case'
+set cinoptions+=g0 " C++ scope declarations (public, private) 0 indent
+set cinoptions+=N-s " don't indent inside namespaces
 
 " Certain file type syntax highlight
-autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD autoindent smartindent
+augroup archlinux
+	au!
+	autocmd BufNewFile,BufRead PKGBUILD* set ft=PKGBUILD autoindent smartindent
+augroup END
 
 " load the shipped man plugin
 runtime ftplugin/man.vim
@@ -31,8 +33,11 @@ packadd! matchit
 
 " YACC C++
 let g:yacc_uses_cpp = 1
-autocmd BufNewFile,BufRead *.ypp set ft=yacc
-autocmd BufNewFile,BufRead *.y++ set ft=yacc
+augroup yacc
+	au!
+	autocmd BufNewFile,BufRead *.ypp set ft=yacc
+	autocmd BufNewFile,BufRead *.y++ set ft=yacc
+augroup END
 
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
@@ -46,25 +51,36 @@ Plug 'kana/vim-textobj-user'
 Plug 'adriaanzon/vim-textobj-matchit'
 Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'make release',
-    \ }
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
 	\ 'colorscheme' : 'default',
 	\ 'active': {
-		\ 'left': [ [ 'mode', 'paste' ],
-		\			[ 'readonly', 'fugitive', 'filename', 'modified' ] ]
-	\ },
-	\ 'component' : {
-		\ 'readonly' : '%{&readonly ? "" : ""}',
-		\ 'fugitive' : '%{!empty(fugitive#head()) ? "git:".fugitive#head() : ""}'
-		\ },
+	\	'left': [ [ 'mode', 'paste' ],
+	\				[ 'readonly', 'fugitive', 'filename', 'modified' ],
+	\				[ 'ale_checking' ] ],
+	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
+	\	           [ 'percent' ],
+	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
+	\	},
+	\ 'component': {
+	\	'readonly' : '%{&readonly ? "" : ""}',
+	\	'fugitive' : '%{!empty(fugitive#head()) ? "git:".fugitive#head() : ""}'
+	\	},
+	\ 'component_expand': {
+	\ 	'ale_checking': 'lightline#ale#checking',
+	\	'ale_warnings': 'lightline#ale#warnings',
+	\	'ale_errors': 'lightline#ale#errors',
+	\	},
+	\ 'component_type': {
+	\	'ale_checking': 'left',
+	\	'ale_warnings': 'warning',
+	\	'ale_errors': 'error',
+	\	},
 	\ 'separator' : { 'left': '', 'right': '' },
 	\ 'subseparator' : { 'left': '', 'right': '' }
 	\ }
@@ -88,8 +104,6 @@ function! s:lightline_update()
 	endtry
 endfunction
 
-let g:clang_use_library = 1 " use clang library instead of executable for code completion
-
 " rust.vim
 let g:rust_fold = 1
 
@@ -106,9 +120,13 @@ nmap ga <Plug>(EasyAlign)
 " ALE
 let g:ale_linters = {
 	\ 'rust': ['rls'],
-	\ 'c': ['clang'],
-	\ 'cpp': ['clang'],
+	\ 'c': ['ccls'],
+	\ 'cpp': ['ccls'],
 	\ }
+let g:ale_completion_enabled = 1
+let g:ale_sign_error = '!!'
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " fzf: enable Rg command
 command! -bang -nargs=* Rg
@@ -117,21 +135,3 @@ command! -bang -nargs=* Rg
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
-
-" LanguageClient-neovim
-let g:LanguageClient_serverCommands = {
-	\ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-	\ }
-augroup lsp_rust
-	au FileType rust let g:LanguageClient_diagnosticsEnable = 0 " use ALE linting for rust
-	au FileType rust nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-	au FileType rust nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-	au FileType rust nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-	au FileType rust nnoremap <silent> gr :call LanguageClient_textDocument_references()<CR>
-	au FileType rust nnoremap <silent> gs :call LanguageClient_textDocument_documentSymbol()<CR>
-	au FileType rust nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-	au FileType rust nmap <C-]> :call LanguageClient#textDocument_definition()<CR>
-augroup END
-let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
-let g:LanguageClient_loggingLevel = 'INFO'
-let g:LanguageClient_serverStderr = '/tmp/LanguageServer.log'

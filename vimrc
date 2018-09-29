@@ -1,3 +1,4 @@
+scriptencoding utf-8
 source /etc/vimrc
 filetype plugin indent on
 set incsearch hlsearch
@@ -61,7 +62,7 @@ let g:lightline = {
 	\ 'colorscheme' : 'default',
 	\ 'active': {
 	\	'left': [ [ 'mode', 'paste' ],
-	\				[ 'readonly', 'fugitive', 'filename', 'modified' ],
+	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
 	\				[ 'ale_checking' ] ],
 	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
 	\	           [ 'percent' ],
@@ -69,12 +70,14 @@ let g:lightline = {
 	\	},
 	\ 'component': {
 	\	'readonly' : '%{&readonly ? "" : ""}',
-	\	'fugitive' : '%{!empty(fugitive#head()) ? "git:".fugitive#head() : ""}'
 	\	},
 	\ 'component_expand': {
 	\ 	'ale_checking': 'lightline#ale#checking',
 	\	'ale_warnings': 'lightline#ale#warnings',
 	\	'ale_errors': 'lightline#ale#errors',
+	\	},
+	\ 'component_function': {
+	\	'gitbranch': 'Gitbranch',
 	\	},
 	\ 'component_type': {
 	\	'ale_checking': 'left',
@@ -84,6 +87,10 @@ let g:lightline = {
 	\ 'separator' : { 'left': '', 'right': '' },
 	\ 'subseparator' : { 'left': '', 'right': '' }
 	\ }
+function! Gitbranch() abort 
+	let br = fugitive#head()
+	return !empty(br) ? 'git:'. br : ''
+endfunction
 augroup LightlineColorscheme
 	autocmd!
 	autocmd ColorScheme * call s:lightline_update()
@@ -127,6 +134,7 @@ let g:ale_completion_enabled = 1
 let g:ale_sign_error = '!!'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> gr <Plug>(ale_find_references)
 
 " fzf: enable Rg command
 command! -bang -nargs=* Rg

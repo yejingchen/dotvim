@@ -44,6 +44,7 @@ augroup END
 call plug#begin('~/.vim/plugged')
 Plug 'w0rp/ale'
 Plug 'Konfekt/FastFold'
+Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'altercation/vim-colors-solarized'

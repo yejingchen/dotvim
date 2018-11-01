@@ -137,9 +137,12 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <silent> gr <Plug>(ale_find_references)
 nmap <silent> gd <Plug>(ale_go_to_definition)
+nmap <silent> gh <Plug>(ale_hover)
 augroup alemaps
 	au!
 	au FileType rust nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+	au FileType c nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+	au FileType cpp nmap <silent> <C-]> <Plug>(ale_go_to_definition)
 augroup END
 
 " fzf: enable Rg command

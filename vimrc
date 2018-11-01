@@ -1,5 +1,7 @@
 scriptencoding utf-8
-source /etc/vimrc
+if filereadable('/etc/vimrc')
+	source /etc/vimrc
+endif
 filetype plugin indent on
 set incsearch hlsearch
 set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu

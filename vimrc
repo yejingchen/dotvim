@@ -8,7 +8,6 @@ set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
-"set bg=dark
 
 " GUI clipboard
 nnoremap <Leader>y :%y +<CR>
@@ -154,3 +153,7 @@ command! -bang -nargs=* Rg
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+" iTerm2
+set bg=dark
+colo solarized

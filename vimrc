@@ -57,6 +57,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug 'lotabout/skim.vim' "depends on external command, installed by pacman
+Plug 'solarnz/thrift.vim'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -153,7 +154,3 @@ command! -bang -nargs=* RG
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
-
-" iTerm2
-set bg=dark
-colo solarized

@@ -56,7 +56,7 @@ Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
-Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
+Plug 'lotabout/skim.vim' "depends on external command, installed by pacman
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -147,7 +147,7 @@ augroup alemaps
 augroup END
 
 " fzf: enable Rg command
-command! -bang -nargs=* Rg
+command! -bang -nargs=* RG
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')

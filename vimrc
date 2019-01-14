@@ -8,6 +8,7 @@ set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
+set bg=dark
 
 " GUI clipboard
 nnoremap <Leader>y :%y +<CR>

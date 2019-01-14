@@ -57,7 +57,7 @@ Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
-Plug 'lotabout/skim.vim' "depends on external command, installed by pacman
+Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'solarnz/thrift.vim'
 call plug#end()
 

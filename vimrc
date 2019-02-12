@@ -5,6 +5,7 @@ endif
 filetype plugin indent on
 set incsearch hlsearch
 set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu
+set formatoptions+=mM
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable

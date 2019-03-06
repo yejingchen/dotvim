@@ -94,7 +94,7 @@ let g:lightline = {
 	\ }
 function! Gitbranch() abort 
 	let br = fugitive#head()
-	return !empty(br) ? 'git:'. br : ''
+	return !empty(br) ? ''. br : ''
 endfunction
 augroup LightlineColorscheme
 	autocmd!

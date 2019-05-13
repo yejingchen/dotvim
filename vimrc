@@ -59,6 +59,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window

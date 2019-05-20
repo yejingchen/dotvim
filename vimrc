@@ -3,6 +3,7 @@ if filereadable('/etc/vimrc')
 	source /etc/vimrc
 endif
 filetype plugin indent on
+set hidden
 set incsearch hlsearch
 set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu
 set formatoptions+=mM
@@ -10,6 +11,8 @@ set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
 set bg=dark
+
+set hidden "redraw for coc.nvim
 
 " GUI clipboard
 nnoremap <Leader>y :%y +<CR>
@@ -45,7 +48,7 @@ augroup END
 
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
@@ -56,10 +59,12 @@ Plug 'kana/vim-textobj-user'
 Plug 'adriaanzon/vim-textobj-matchit'
 Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
-Plug 'maximbaz/lightline-ale'
+"Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
-Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-endwise'
+Plug 'rstacruz/vim-closer'
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -67,27 +72,17 @@ let g:lightline = {
 	\ 'colorscheme' : 'default',
 	\ 'active': {
 	\	'left': [ [ 'mode', 'paste' ],
-	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
-	\				[ 'ale_checking' ] ],
-	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
+	\				[ 'readonly', 'gitbranch', 'filename', 'modified', 'cocstatus' ] ],
+	\	'right': [ [ 'lineinfo' ],
 	\	           [ 'percent' ],
 	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
 	\	},
 	\ 'component': {
 	\	'readonly' : '%{&readonly ? "" : ""}',
 	\	},
-	\ 'component_expand': {
-	\ 	'ale_checking': 'lightline#ale#checking',
-	\	'ale_warnings': 'lightline#ale#warnings',
-	\	'ale_errors': 'lightline#ale#errors',
-	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
-	\	},
-	\ 'component_type': {
-	\	'ale_checking': 'left',
-	\	'ale_warnings': 'warning',
-	\	'ale_errors': 'error',
+	\   'cocstatus': 'coc#status'
 	\	},
 	\ 'separator' : { 'left': '', 'right': '' },
 	\ 'subseparator' : { 'left': '', 'right': '' }
@@ -129,25 +124,34 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" ALE
-let g:ale_linters = {
-	\ 'rust': ['rls'],
-	\ 'c': ['ccls'],
-	\ 'cpp': ['ccls'],
-	\ }
-let g:ale_completion_enabled = 1
-let g:ale_sign_error = '!!'
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-nmap <silent> gr <Plug>(ale_find_references)
-nmap <silent> gd <Plug>(ale_go_to_definition)
-nmap <silent> gh <Plug>(ale_hover)
-augroup alemaps
-	au!
-	au FileType rust nmap <silent> <C-]> <Plug>(ale_go_to_definition)
-	au FileType c nmap <silent> <C-]> <Plug>(ale_go_to_definition)
-	au FileType cpp nmap <silent> <C-]> <Plug>(ale_go_to_definition)
-augroup END
+" coc.nvim
+" highlight
+hi link CocErrorHighlight SpellBad
+hi link CocWarningHighlight SpellLocal
+hi link CocErrorSign Error
+hi link CocWarningSign Type
+hi link CocHintSign CocWarningSign
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+" coc.nvim END
 
 " fzf: enable Rg command
 command! -bang -nargs=* RG

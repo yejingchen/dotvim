@@ -6,7 +6,7 @@ filetype plugin indent on
 set hidden
 set incsearch hlsearch
 set tabstop=4 shiftwidth=4 ruler showcmd nu wildmenu
-set formatoptions+=mM
+set formatoptions+=mM shortmess-=S
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable

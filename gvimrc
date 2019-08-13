@@ -1,4 +1,4 @@
-set bg=light guifont=等距更纱黑体\ SC\ 13
+set bg=light guifont=Sarasa-Mono-SC-Regular:h13
 colo solarized
 set guioptions-=T
 set guioptions-=m

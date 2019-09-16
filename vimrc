@@ -62,6 +62,7 @@ Plug 'solarnz/thrift.vim'
 Plug 'itchyny/lightline.vim'
 "Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'

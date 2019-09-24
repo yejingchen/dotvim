@@ -64,7 +64,8 @@ Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pedrohdz/vim-yaml-folds'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window

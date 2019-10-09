@@ -67,6 +67,7 @@ Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window

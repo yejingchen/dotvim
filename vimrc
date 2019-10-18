@@ -10,7 +10,7 @@ set formatoptions+=mM
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
-set bg=dark
+set background=dark
 
 set hidden "redraw for coc.nvim
 
@@ -48,7 +48,7 @@ augroup END
 
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
-"Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
@@ -59,7 +59,7 @@ Plug 'kana/vim-textobj-user'
 Plug 'adriaanzon/vim-textobj-matchit'
 Plug 'igankevich/mesonic'
 Plug 'itchyny/lightline.vim'
-"Plug 'maximbaz/lightline-ale'
+Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
@@ -73,13 +73,24 @@ let g:lightline = {
 	\ 'colorscheme' : 'default',
 	\ 'active': {
 	\	'left': [ [ 'mode', 'paste' ],
-	\				[ 'readonly', 'gitbranch', 'filename', 'modified', 'cocstatus' ] ],
-	\	'right': [ [ 'lineinfo' ],
+	\				[ 'readonly', 'gitbranch', 'filename', 'modified', 'cocstatus' ],
+	\				[ 'ale_checking' ] ],
+	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
 	\	           [ 'percent' ],
 	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
 	\	},
 	\ 'component': {
 	\	'readonly' : '%{&readonly ? "" : ""}',
+	\	},
+	\ 'component_expand': {
+	\ 	'ale_checking': 'lightline#ale#checking',
+	\	'ale_warnings': 'lightline#ale#warnings',
+	\	'ale_errors': 'lightline#ale#errors',
+	\	},
+	\ 'component_type': {
+	\	'ale_checking': 'left',
+	\	'ale_warnings': 'warning',
+	\	'ale_errors': 'error',
 	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
@@ -124,6 +135,15 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 " vim-easy-align, visual & normal mode
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+" ALE
+let g:ale_linters = {
+	\ 'rust': [],
+	\ 'c': [],
+	\ 'cpp': [],
+	\ }
+let g:ale_completion_enabled = 0
+let g:ale_sign_error = '!!'
 
 " coc.nvim
 " highlight

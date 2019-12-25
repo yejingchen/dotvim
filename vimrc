@@ -66,11 +66,15 @@ Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rust-lang/rust.vim'
+Plug 'noahfrederick/vim-hemisu'
 call plug#end()
+
+colo hemisu
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
-	\ 'colorscheme' : 'default',
+	\ 'colorscheme' : 'one',
 	\ 'active': {
 	\	'left': [ [ 'mode', 'paste' ],
 	\				[ 'readonly', 'gitbranch', 'filename', 'modified', 'cocstatus' ],

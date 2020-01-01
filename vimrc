@@ -70,8 +70,6 @@ Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
 call plug#end()
 
-colo hemisu
-
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
 	\ 'colorscheme' : 'one',

@@ -4,7 +4,7 @@ if filereadable('/etc/vimrc')
 endif
 filetype plugin indent on
 set hidden
-set incsearch hlsearch
+set incsearch hlsearch ignorecase smartcase "use \C to force case-sensitive!
 set tabstop=4 shiftwidth=4 expandtab
 set ruler showcmd nu wildmenu
 set formatoptions+=mM
@@ -98,8 +98,6 @@ let g:lightline = {
 	\	'gitbranch': 'Gitbranch',
 	\   'cocstatus': 'coc#status'
 	\	},
-	\ 'separator' : { 'left': '', 'right': '' },
-	\ 'subseparator' : { 'left': '', 'right': '' }
 	\ }
 function! Gitbranch() abort 
 	let br = fugitive#head()

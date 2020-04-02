@@ -1,4 +1,4 @@
-set bg=light guifont=等距更纱黑体\ SC\ 13
+set background=light guifont=JetBrains Mono 13
 colo hemisu
 set guioptions-=T
 set guioptions-=m

@@ -4,14 +4,16 @@ if filereadable('/etc/vimrc')
 endif
 filetype plugin indent on
 set hidden
-set incsearch hlsearch ignorecase smartcase "use \C to force case-sensitive!
+set incsearch hlsearch
 set tabstop=4 shiftwidth=4 expandtab
 set ruler showcmd nu wildmenu
 set formatoptions+=mM shortmess-=S
 set colorcolumn=81 cursorline
 set mouse=a
 syntax enable
-set background=dark
+"set background=light termguicolors
+
+highlight clear SignColumn
 
 set hidden "redraw for coc.nvim
 
@@ -54,7 +56,6 @@ Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
-Plug 'altercation/vim-colors-solarized'
 Plug 'airblade/vim-gitgutter'
 Plug 'kana/vim-textobj-user'
 Plug 'adriaanzon/vim-textobj-matchit'
@@ -72,9 +73,11 @@ Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
 Plug 'scrooloose/nerdtree'
 Plug 'saltstack/salt-vim'
+Plug 'cespare/vim-toml'
+Plug 'lifepillar/vim-solarized8'
+Plug 'reedes/vim-colors-pencil'
+Plug 'chr4/nginx.vim'
 call plug#end()
-
-colo hemisu
 
 set laststatus=2 " Enable lightline for each window
 let g:lightline = {
@@ -118,9 +121,9 @@ function! s:lightline_update()
 		return
 	endif
 	try
-		if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow'
+        if g:colors_name =~# 'wombat\|solarized8\{,1}\|landscape\|jellybeans\|seoul256\|Tomorrow'
 			let g:lightline.colorscheme =
-						\ substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
+						\ substitute(substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', ''), '8', '', '')
 			call lightline#init()
 			call lightline#colorscheme()
 			call lightline#update()
@@ -128,6 +131,8 @@ function! s:lightline_update()
 	catch
 	endtry
 endfunction
+
+"colorscheme solarized8
 
 " rust.vim
 let g:rust_fold = 1

@@ -68,7 +68,7 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
 Plug 'scrooloose/nerdtree'
@@ -156,33 +156,32 @@ let g:ale_linters = {
 let g:ale_completion_enabled = 0
 let g:ale_sign_error = '!!'
 
-" coc.nvim
-" highlight
-hi link CocErrorHighlight SpellBad
-hi link CocWarningHighlight SpellLocal
-hi link CocErrorSign Error
-hi link CocWarningSign Type
-hi link CocHintSign CocWarningSign
+" coc.nvim highlight
+"hi link CocErrorHighlight SpellBad
+"hi link CocWarningHighlight SpellLocal
+"hi link CocErrorSign Error
+"hi link CocWarningSign Type
+"hi link CocHintSign CocWarningSign
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
+" Use <c-space> to trigger coc completion.
+"inoremap <silent><expr> <c-space> coc#refresh()
+"nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
+"nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+"nmap <leader>rn <Plug>(coc-rename)
 
 " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+"nnoremap <silent> K :call <SID>show_documentation()<CR>
+"function! s:show_documentation()
+"  if (index(['vim','help'], &filetype) >= 0)
+"    execute 'h '.expand('<cword>')
+"  else
+"    call CocAction('doHover')
+"  endif
+"endfunction
 " coc.nvim END
 
 " fzf: enable Rg command

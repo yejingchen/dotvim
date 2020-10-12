@@ -26,6 +26,24 @@ set cinoptions+=l1 " case block aligns according to 'case'
 set cinoptions+=g0 " C++ scope declarations (public, private) 0 indent
 set cinoptions+=N-s " don't indent inside namespaces
 
+" ref: https://github.com/lilydjwg/dotvim/blob/9923736507749f703d685f29fb3f0d12b6856731/vimrc#L613-L629
+if &term =~ '^screen\|^tmux' && exists('&t_BE')
+  let &t_BE = "\033[?2004h"
+  let &t_BD = "\033[?2004l"
+  " t_PS and t_PE are key code options and they are special
+  exec "set t_PS=\033[200~"
+  exec "set t_PE=\033[201~"
+endif
+if &term =~ '^screen\|^tmux'
+  " This may leave mouse in use by terminal application
+  " exec "set t_RV=\033Ptmux;\033\033[>c\033\\"
+  set ttymouse=sgr
+  if &t_GP == ''
+    " for getwinpos
+    exec "set t_GP=\033Ptmux;\033\033[13t\033\\"
+  endif
+endif
+
 " Certain file type syntax highlight
 augroup archlinux
 	au!

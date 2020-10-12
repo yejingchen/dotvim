@@ -54,7 +54,6 @@ let g:ale_linters = {
             \ 'cpp': [],
             \ 'objc': [],
             \ 'objcpp': [],
-            \ 'python': [],
             \}
 "let g:ale_completion_enabled = 1
 "let g:ale_sign_error = '!!'
@@ -98,7 +97,7 @@ let g:lightline = {
 	\	'left': [ [ 'mode', 'paste' ],
 	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
 	\				[ 'ale_checking' ] ],
-	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
+	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings', 'ycm_warnings', 'ycm_errors' ],
 	\	           [ 'percent' ],
 	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
 	\	},
@@ -109,11 +108,15 @@ let g:lightline = {
 	\ 	'ale_checking': 'lightline#ale#checking',
 	\	'ale_warnings': 'lightline#ale#warnings',
 	\	'ale_errors': 'lightline#ale#errors',
+	\	'ycm_warnings': 'youcompleteme#GetWarningCount',
+	\	'ycm_errors': 'youcompleteme#GetErrorCount'
 	\	},
 	\ 'component_type': {
 	\	'ale_checking': 'left',
 	\	'ale_warnings': 'warning',
 	\	'ale_errors': 'error',
+	\	'ycm_warnings': 'warning',
+	\	'ycm_errors': 'error',
 	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
@@ -121,7 +124,7 @@ let g:lightline = {
 	\ }
 function! Gitbranch() abort 
 	let br = fugitive#head()
-	return !empty(br) ? ''. br : ''
+	return !empty(br) ? ''.br : ''
 endfunction
 augroup LightlineColorscheme
 	autocmd!
@@ -142,6 +145,25 @@ function! s:lightline_update()
 	catch
 	endtry
 endfunction
+
+" YouCompleteMe
+let g:ycm_language_server = 
+            \[
+            \   {
+            \       'name': 'rust',
+            \       'cmdline': ['rust-analyzer'],
+            \       'filetypes': ['rust'],
+            \       'project_root_files': ['Cargo.toml'],
+            \   },
+            \   {
+            \       'name': 'ccls',
+            \       'cmdline': ['ccls'],
+            \       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
+            \       'project_root_files': ['.ccls-root', 'compile_commands.json']
+            \   },
+            \]
+nnoremap gd :YcmCompleter GoTo<CR>
+nnoremap gr :YcmCompleter GoToReferences<CR>
 
 "colorscheme solarized8
 

@@ -164,6 +164,7 @@ let g:ycm_language_server =
             \       'project_root_files': ['.ccls-root', 'compile_commands.json']
             \   },
             \]
+let g:ycm_rust_toolchain_root = "/Users/jye/.rustup/toolchains/stable-x86_64-apple-darwin"
 nnoremap gd :YcmCompleter GoTo<CR>
 nnoremap gr :YcmCompleter GoToReferences<CR>
 

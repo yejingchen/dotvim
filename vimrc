@@ -47,6 +47,8 @@ augroup yacc
 	autocmd BufNewFile,BufRead *.y++ set ft=yacc
 augroup END
 
+set completeopt+=popup
+
 " ALE
 let g:ale_linters = {
             \ 'rust': [],

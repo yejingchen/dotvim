@@ -13,8 +13,6 @@ set mouse=a
 syntax enable
 set background=dark
 
-set hidden "redraw for coc.nvim
-
 " GUI clipboard
 nnoremap <Leader>y :%y +<CR>
 nnoremap <Leader>p :put +<CR>
@@ -65,7 +63,6 @@ Plug 'majutsushi/tagbar'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
 call plug#end()
@@ -75,7 +72,7 @@ let g:lightline = {
 	\ 'colorscheme' : 'one',
 	\ 'active': {
 	\	'left': [ [ 'mode', 'paste' ],
-	\				[ 'readonly', 'gitbranch', 'filename', 'modified', 'cocstatus' ],
+	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
 	\				[ 'ale_checking' ] ],
 	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
 	\	           [ 'percent' ],
@@ -96,7 +93,6 @@ let g:lightline = {
 	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
-	\   'cocstatus': 'coc#status'
 	\	},
 	\ }
 function! Gitbranch() abort 
@@ -144,35 +140,6 @@ let g:ale_linters = {
 	\ }
 let g:ale_completion_enabled = 0
 let g:ale_sign_error = '!!'
-
-" coc.nvim
-" highlight
-hi link CocErrorHighlight SpellBad
-hi link CocWarningHighlight SpellLocal
-hi link CocErrorSign Error
-hi link CocWarningSign Type
-hi link CocHintSign CocWarningSign
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-" coc.nvim END
 
 " fzf: enable Rg command
 command! -bang -nargs=* RG

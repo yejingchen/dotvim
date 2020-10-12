@@ -4,12 +4,13 @@ if filereadable('/etc/vimrc')
 endif
 filetype plugin indent on
 set hidden
-set incsearch hlsearch ignorecase smartcase "use \C to force case-sensitive!
+set incsearch hlsearch
 set tabstop=4 shiftwidth=4 expandtab
 set ruler showcmd nu wildmenu
 set formatoptions+=mM
 set colorcolumn=81 cursorline
 set mouse=a
+set backspace=indent,eol,start
 syntax enable
 set background=dark
 
@@ -65,6 +66,7 @@ Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
+Plug 'freitass/todo.txt-vim'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window

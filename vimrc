@@ -15,8 +15,6 @@ syntax enable
 
 highlight clear SignColumn
 
-set hidden "redraw for coc.nvim
-
 " GUI clipboard
 nnoremap <Leader>y :%y +<CR>
 nnoremap <Leader>p :put +<CR>
@@ -49,6 +47,20 @@ augroup yacc
 	autocmd BufNewFile,BufRead *.y++ set ft=yacc
 augroup END
 
+" ALE
+let g:ale_linters = {
+            \ 'rust': [],
+            \ 'c': [],
+            \ 'cpp': [],
+            \ 'objc': [],
+            \ 'objcpp': [],
+            \ 'python': [],
+            \}
+"let g:ale_completion_enabled = 1
+"let g:ale_sign_error = '!!'
+let g:ale_set_balloons = 1
+"set omnifunc=ale#completion#OmniFunc
+
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'dense-analysis/ale'
@@ -68,7 +80,6 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
 Plug 'scrooloose/nerdtree'
@@ -77,6 +88,7 @@ Plug 'cespare/vim-toml'
 Plug 'lifepillar/vim-solarized8'
 Plug 'reedes/vim-colors-pencil'
 Plug 'chr4/nginx.vim'
+Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/local/bin/python3 install.py' }
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -84,7 +96,7 @@ let g:lightline = {
 	\ 'colorscheme' : 'one',
 	\ 'active': {
 	\	'left': [ [ 'mode', 'paste' ],
-	\				[ 'readonly', 'gitbranch', 'filename', 'modified', 'cocstatus' ],
+	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
 	\				[ 'ale_checking' ] ],
 	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
 	\	           [ 'percent' ],
@@ -105,7 +117,6 @@ let g:lightline = {
 	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
-	\   'cocstatus': 'coc#status'
 	\	},
 	\ }
 function! Gitbranch() abort 
@@ -146,43 +157,6 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 " vim-easy-align, visual & normal mode
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
-" ALE
-let g:ale_linters = {
-	\ 'rust': [],
-	\ 'c': [],
-	\ 'cpp': [],
-	\ }
-let g:ale_completion_enabled = 0
-let g:ale_sign_error = '!!'
-
-" coc.nvim highlight
-"hi link CocErrorHighlight SpellBad
-"hi link CocWarningHighlight SpellLocal
-"hi link CocErrorSign Error
-"hi link CocWarningSign Type
-"hi link CocHintSign CocWarningSign
-
-" Use <c-space> to trigger coc completion.
-"inoremap <silent><expr> <c-space> coc#refresh()
-"nmap <silent> <C-k> <Plug>(coc-diagnostic-prev)
-"nmap <silent> <C-j> <Plug>(coc-diagnostic-next)
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-"nmap <leader>rn <Plug>(coc-rename)
-
-" Use K to show documentation in preview window
-"nnoremap <silent> K :call <SID>show_documentation()<CR>
-"function! s:show_documentation()
-"  if (index(['vim','help'], &filetype) >= 0)
-"    execute 'h '.expand('<cword>')
-"  else
-"    call CocAction('doHover')
-"  endif
-"endfunction
-" coc.nvim END
 
 " fzf: enable Rg command
 command! -bang -nargs=* RG

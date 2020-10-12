@@ -58,7 +58,7 @@ let g:ale_linters = {
             \ 'objcpp': [],
             \}
 "let g:ale_completion_enabled = 1
-"let g:ale_sign_error = '!!'
+let g:ale_sign_error = '!!'
 let g:ale_set_balloons = 1
 "set omnifunc=ale#completion#OmniFunc
 
@@ -164,7 +164,7 @@ let g:ycm_language_server =
             \       'project_root_files': ['.ccls-root', 'compile_commands.json']
             \   },
             \]
-let g:ycm_rust_toolchain_root = "/Users/jye/.rustup/toolchains/stable-x86_64-apple-darwin"
+let g:ycm_rust_toolchain_root = '/Users/jye/.rustup/toolchains/stable-x86_64-apple-darwin'
 nnoremap gd :YcmCompleter GoTo<CR>
 nnoremap gr :YcmCompleter GoToReferences<CR>
 

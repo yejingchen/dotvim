@@ -26,6 +26,8 @@ set cinoptions+=l1 " case block aligns according to 'case'
 set cinoptions+=g0 " C++ scope declarations (public, private) 0 indent
 set cinoptions+=N-s " don't indent inside namespaces
 
+set completeopt+=popup
+
 " ref: https://github.com/lilydjwg/dotvim/blob/9923736507749f703d685f29fb3f0d12b6856731/vimrc#L613-L629
 if &term =~ '^screen\|^tmux' && exists('&t_BE')
   let &t_BE = "\033[?2004h"
@@ -64,6 +66,19 @@ augroup yacc
 	autocmd BufNewFile,BufRead *.y++ set ft=yacc
 augroup END
 
+" ALE
+let g:ale_linters =
+            \{
+            \ 'rust': [],
+            \ 'c': [],
+            \ 'cpp': [],
+            \ 'objc': [],
+            \ 'objcpp': [],
+            \}
+let g:ale_completion_enabled = 0
+let g:ale_sign_error = '!!'
+let g:ale_set_balloons = 1
+
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'dense-analysis/ale'
@@ -85,6 +100,7 @@ Plug 'rstacruz/vim-closer'
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
 Plug 'freitass/todo.txt-vim'
+Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -94,7 +110,7 @@ let g:lightline = {
 	\	'left': [ [ 'mode', 'paste' ],
 	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
 	\				[ 'ale_checking' ] ],
-	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
+	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings', 'ycm_errors', 'ycm_warnings' ],
 	\	           [ 'percent' ],
 	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
 	\	},
@@ -105,11 +121,15 @@ let g:lightline = {
 	\ 	'ale_checking': 'lightline#ale#checking',
 	\	'ale_warnings': 'lightline#ale#warnings',
 	\	'ale_errors': 'lightline#ale#errors',
+	\	'ycm_warnings': 'youcompleteme#GetWarningCount',
+	\	'ycm_errors': 'youcompleteme#GetErrorCount'
 	\	},
 	\ 'component_type': {
 	\	'ale_checking': 'left',
 	\	'ale_warnings': 'warning',
 	\	'ale_errors': 'error',
+	\	'ycm_warnings': 'warning',
+	\	'ycm_errors': 'error',
 	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
@@ -139,6 +159,26 @@ function! s:lightline_update()
 	endtry
 endfunction
 
+" YouCompleteMe
+let g:ycm_language_server =
+            \[
+            \   {
+            \       'name': 'rust',
+            \       'cmdline': ['rust-analyzer'],
+            \       'filetypes': ['rust'],
+            \       'project_root_files': ['Cargo.toml'],
+            \   },
+            \   {
+            \       'name': 'ccls',
+            \       'cmdline': ['ccls'],
+            \       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
+            \       'project_root_files': ['.ccls-root', 'compile_commands.json']
+            \   },
+            \]
+let g:ycm_rust_toolchain_root = '/home/yjc/.rustup/toolchains/stable-x86_64-unknown-linux-gnu'
+nnoremap gd :YcmCompleter GoTo<CR>
+nnoremap gr :YcmCompleter GoToReferences<CR>
+
 " rust.vim
 let g:rust_fold = 1
 
@@ -151,15 +191,6 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 " vim-easy-align, visual & normal mode
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
-" ALE
-let g:ale_linters = {
-	\ 'rust': [],
-	\ 'c': [],
-	\ 'cpp': [],
-	\ }
-let g:ale_completion_enabled = 0
-let g:ale_sign_error = '!!'
 
 " fzf: enable Rg command
 command! -bang -nargs=* RG

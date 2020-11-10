@@ -170,6 +170,7 @@ let g:ycm_language_server =
 let g:ycm_rust_toolchain_root = '/Users/jye/.rustup/toolchains/stable-x86_64-apple-darwin'
 nnoremap gd :YcmCompleter GoTo<CR>
 nnoremap gr :YcmCompleter GoToReferences<CR>
+nnoremap gt :YcmCompleter GetType<CR>
 
 "colorscheme solarized8
 

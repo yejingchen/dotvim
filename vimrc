@@ -62,6 +62,9 @@ let g:ale_sign_error = '!!'
 let g:ale_set_balloons = 1
 "set omnifunc=ale#completion#OmniFunc
 
+" mac os surprises
+set pythonthreedll=/usr/local/Frameworks/Python.framework/Versions/Current/Python
+
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'dense-analysis/ale'

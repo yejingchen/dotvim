@@ -119,6 +119,8 @@ endfunction
 
 " BEGIN vim-plug
 call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
 Plug 'dense-analysis/ale'
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-fugitive'

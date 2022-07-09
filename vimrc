@@ -5,11 +5,11 @@ endif
 filetype plugin indent on
 set hidden
 set incsearch hlsearch
-set tabstop=4 shiftwidth=4 expandtab
+set tabstop=4 shiftwidth=4
 set ruler showcmd nu wildmenu
 set formatoptions+=mM
 set colorcolumn=81 cursorline
-set mouse=a
+set mouse=a ttymouse=sgr
 set backspace=indent,eol,start
 syntax enable
 set background=dark
@@ -27,24 +27,6 @@ set cinoptions+=g0 " C++ scope declarations (public, private) 0 indent
 set cinoptions+=N-s " don't indent inside namespaces
 
 set completeopt+=popup
-
-" ref: https://github.com/lilydjwg/dotvim/blob/9923736507749f703d685f29fb3f0d12b6856731/vimrc#L613-L629
-if &term =~ '^screen\|^tmux' && exists('&t_BE')
-  let &t_BE = "\033[?2004h"
-  let &t_BD = "\033[?2004l"
-  " t_PS and t_PE are key code options and they are special
-  exec "set t_PS=\033[200~"
-  exec "set t_PE=\033[201~"
-endif
-if &term =~ '^screen\|^tmux'
-  " This may leave mouse in use by terminal application
-  " exec "set t_RV=\033Ptmux;\033\033[>c\033\\"
-  set ttymouse=sgr
-  if &t_GP == ''
-    " for getwinpos
-    exec "set t_GP=\033Ptmux;\033\033[13t\033\\"
-  endif
-endif
 
 " Certain file type syntax highlight
 augroup archlinux
@@ -79,31 +61,6 @@ let g:ale_completion_enabled = 0
 let g:ale_sign_error = '!!'
 let g:ale_set_balloons = 1
 
-" BEGIN vim-plug
-call plug#begin('~/.vim/plugged')
-Plug 'dense-analysis/ale'
-Plug 'Konfekt/FastFold'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/vim-easy-align'
-Plug 'easymotion/vim-easymotion'
-Plug 'altercation/vim-colors-solarized'
-Plug 'airblade/vim-gitgutter'
-Plug 'kana/vim-textobj-user'
-Plug 'adriaanzon/vim-textobj-matchit'
-Plug 'igankevich/mesonic'
-Plug 'itchyny/lightline.vim'
-Plug 'maximbaz/lightline-ale'
-Plug 'majutsushi/tagbar'
-Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
-Plug 'tpope/vim-endwise'
-Plug 'rstacruz/vim-closer'
-Plug 'rust-lang/rust.vim'
-Plug 'noahfrederick/vim-hemisu'
-Plug 'freitass/todo.txt-vim'
-Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
-call plug#end()
-
-set laststatus=2 " Enable lightline for each window
 let g:lightline = {
 	\ 'colorscheme' : 'one',
 	\ 'active': {
@@ -115,7 +72,7 @@ let g:lightline = {
 	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
 	\	},
 	\ 'component': {
-	\	'readonly' : '%{&readonly ? "" : ""}',
+	\	'readonly' : '%{&readonly ? "" : ""}',
 	\	},
 	\ 'component_expand': {
 	\ 	'ale_checking': 'lightline#ale#checking',
@@ -159,6 +116,33 @@ function! s:lightline_update()
 	endtry
 endfunction
 
+
+" BEGIN vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'dense-analysis/ale'
+Plug 'Konfekt/FastFold'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/vim-easy-align'
+Plug 'easymotion/vim-easymotion'
+Plug 'altercation/vim-colors-solarized'
+Plug 'airblade/vim-gitgutter'
+Plug 'kana/vim-textobj-user'
+Plug 'adriaanzon/vim-textobj-matchit'
+Plug 'igankevich/mesonic'
+Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
+Plug 'majutsushi/tagbar'
+Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
+Plug 'tpope/vim-endwise'
+Plug 'rstacruz/vim-closer'
+Plug 'rust-lang/rust.vim'
+Plug 'noahfrederick/vim-hemisu'
+Plug 'freitass/todo.txt-vim'
+Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
+Plug 'nathanaelkane/vim-indent-guides'
+call plug#end()
+
+set laststatus=2 " Enable lightline for each window
 " YouCompleteMe
 let g:ycm_language_server =
             \[
@@ -168,14 +152,14 @@ let g:ycm_language_server =
             \       'filetypes': ['rust'],
             \       'project_root_files': ['Cargo.toml'],
             \   },
-            \   {
-            \       'name': 'ccls',
-            \       'cmdline': ['ccls'],
-            \       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
-            \       'project_root_files': ['.ccls-root', 'compile_commands.json']
-            \   },
             \]
-let g:ycm_rust_toolchain_root = '/home/yjc/.rustup/toolchains/stable-x86_64-unknown-linux-gnu'
+            "\   {
+            "\       'name': 'ccls',
+            "\       'cmdline': ['ccls'],
+            "\       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
+            "\       'project_root_files': ['.ccls-root', 'compile_commands.json']
+            "\   },
+let g:ycm_rust_toolchain_root = '/usr'
 nnoremap gd :YcmCompleter GoTo<CR>
 nnoremap gr :YcmCompleter GoToReferences<CR>
 

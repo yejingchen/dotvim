@@ -93,8 +93,8 @@ let g:lightline = {
 	\	},
 	\ }
 function! Gitbranch() abort 
-	let br = fugitive#head()
-	return !empty(br) ? ''. br : ''
+	let br = FugitiveHead()
+	return !empty(br) ? ''. br : ''
 endfunction
 augroup LightlineColorscheme
 	autocmd!

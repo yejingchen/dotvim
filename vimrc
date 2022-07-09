@@ -152,13 +152,13 @@ let g:ycm_language_server =
             \       'filetypes': ['rust'],
             \       'project_root_files': ['Cargo.toml'],
             \   },
+            \   {
+            \       'name': 'ccls',
+            \       'cmdline': ['ccls'],
+            \       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
+            \       'project_root_files': ['.ccls-root', 'compile_commands.json']
+            \   },
             \]
-            "\   {
-            "\       'name': 'ccls',
-            "\       'cmdline': ['ccls'],
-            "\       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
-            "\       'project_root_files': ['.ccls-root', 'compile_commands.json']
-            "\   },
 let g:ycm_rust_toolchain_root = '/usr'
 nnoremap gd :YcmCompleter GoTo<CR>
 nnoremap gr :YcmCompleter GoToReferences<CR>

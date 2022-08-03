@@ -82,7 +82,7 @@ Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
-Plug 'tpope/vim-endwise'
+"Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'

@@ -93,6 +93,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'reedes/vim-colors-pencil'
 Plug 'chr4/nginx.vim'
 Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/local/bin/python3 install.py' }
+Plug 'pearofducks/ansible-vim'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -194,3 +195,7 @@ command! -bang -nargs=* RG
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
+
+augroup vim_ansible
+       au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
+augroup END

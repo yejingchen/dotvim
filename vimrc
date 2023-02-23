@@ -62,6 +62,7 @@ let g:ale_linters = {
 "let g:ale_completion_enabled = 1
 let g:ale_sign_error = '!!'
 let g:ale_set_balloons = 1
+let g:ale_virtualtext_cursor = 'current'
 "set omnifunc=ale#completion#OmniFunc
 
 " mac os surprises

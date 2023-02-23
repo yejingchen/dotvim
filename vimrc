@@ -94,6 +94,7 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'chr4/nginx.vim'
 Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/local/bin/python3 install.py' }
 Plug 'pearofducks/ansible-vim'
+Plug 'psf/black', { 'branch': 'stable' }
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
@@ -197,3 +198,5 @@ nmap ga <Plug>(EasyAlign)
 augroup vim_ansible
        au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
 augroup END
+
+let g:black_use_virtualenv = 0

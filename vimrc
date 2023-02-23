@@ -57,6 +57,7 @@ let g:ale_linters = {
             \ 'objc': [],
             \ 'objcpp': [],
             \ 'python': [],
+            \ 'yaml.ansible': ['ansible_lint']
             \}
 "let g:ale_completion_enabled = 1
 let g:ale_sign_error = '!!'

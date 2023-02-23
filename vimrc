@@ -8,7 +8,7 @@ set incsearch hlsearch
 set tabstop=4 shiftwidth=4 expandtab
 set ruler showcmd nu wildmenu
 set formatoptions+=mM shortmess-=S
-set colorcolumn=81 cursorline
+set cursorline
 set mouse=a
 syntax enable
 "set background=light termguicolors
@@ -81,8 +81,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'majutsushi/tagbar'
 Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
-"Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
 Plug 'rust-lang/rust.vim'
 Plug 'noahfrederick/vim-hemisu'
@@ -187,14 +186,6 @@ let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']
 " vim-easy-align, visual & normal mode
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
-
-" fzf: enable Rg command
-command! -bang -nargs=* RG
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
 
 augroup vim_ansible
        au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible

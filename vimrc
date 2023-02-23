@@ -56,6 +56,7 @@ let g:ale_linters =
             \ 'cpp': [],
             \ 'objc': [],
             \ 'objcpp': [],
+            \ 'python': [],
             \}
 let g:ale_completion_enabled = 0
 let g:ale_sign_error = '!!'
@@ -158,6 +159,12 @@ let g:ycm_language_server =
             \       'cmdline': ['ccls'],
             \       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
             \       'project_root_files': ['.ccls-root', 'compile_commands.json']
+            \   },
+            \   {
+            \       'name': 'ruff',
+            \       'cmdline': ['ruff-lsp'],
+            \       'filetypes': ['python'],
+            \       'project_root_files': ['pyproject.toml', 'setup.py']
             \   },
             \]
 let g:ycm_rust_toolchain_root = '/usr'

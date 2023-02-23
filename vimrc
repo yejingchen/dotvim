@@ -196,7 +196,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 augroup vim_ansible
-       au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
+       au BufRead,BufNewFile ~/git/ansible/*.yml set filetype=yaml.ansible
 augroup END
 
 let g:black_use_virtualenv = 0

@@ -8,7 +8,7 @@ set incsearch hlsearch
 set tabstop=4 shiftwidth=4
 set ruler showcmd nu wildmenu
 set formatoptions+=mM
-set colorcolumn=81 cursorline
+set colorcolumn=81
 set mouse=a ttymouse=sgr
 set backspace=indent,eol,start
 syntax enable

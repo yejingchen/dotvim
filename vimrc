@@ -140,6 +140,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'freitass/todo.txt-vim'
 Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window

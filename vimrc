@@ -12,7 +12,10 @@ set colorcolumn=81
 set mouse=a ttymouse=sgr
 set backspace=indent,eol,start
 syntax enable
+colorscheme desert
 set background=dark
+highlight Normal ctermbg=NONE
+highlight NonText ctermbg=NONE
 
 " GUI clipboard
 nnoremap <Leader>y :%y +<CR>

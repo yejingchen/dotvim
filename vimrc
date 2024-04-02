@@ -112,10 +112,10 @@ function! s:lightline_update()
 		if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow'
 			let g:lightline.colorscheme =
 						\ substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
-			call lightline#init()
-			call lightline#colorscheme()
-			call lightline#update()
 		endif
+		call lightline#init()
+		call lightline#colorscheme()
+		call lightline#update()
 	catch
 	endtry
 endfunction

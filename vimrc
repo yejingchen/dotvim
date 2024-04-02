@@ -145,6 +145,7 @@ Plug 'freitass/todo.txt-vim'
 Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-commentary'
+Plug 'ayu-theme/ayu-vim'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window

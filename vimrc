@@ -54,16 +54,17 @@ augroup END
 " ALE
 let g:ale_linters =
             \{
-            \ 'rust': [],
-            \ 'c': [],
-            \ 'cpp': [],
-            \ 'objc': [],
-            \ 'objcpp': [],
-            \ 'python': [],
+            \ 'rust': ['analyzer'],
+            \ 'c': ['ccls'],
+            \ 'cpp': ['ccls'],
+            \ 'objc': ['ccls'],
+            \ 'objcpp': ['ccls'],
+            \ 'python': ['ruff', 'pylsp'],
             \}
-let g:ale_completion_enabled = 0
+let g:ale_completion_enabled = 1
 let g:ale_sign_error = '!!'
 let g:ale_set_balloons = 1
+let g:ale_virtualtext_cursor = 'current'
 
 let g:lightline = {
 	\ 'colorscheme' : 'one',
@@ -71,7 +72,7 @@ let g:lightline = {
 	\	'left': [ [ 'mode', 'paste' ],
 	\				[ 'readonly', 'gitbranch', 'filename', 'modified' ],
 	\				[ 'ale_checking' ] ],
-	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings', 'ycm_errors', 'ycm_warnings' ],
+	\	'right': [ [ 'lineinfo', 'ale_errors', 'ale_warnings' ],
 	\	           [ 'percent' ],
 	\	           [ 'fileformat', 'fileencoding', 'filetype' ] ] 
 	\	},
@@ -82,15 +83,11 @@ let g:lightline = {
 	\ 	'ale_checking': 'lightline#ale#checking',
 	\	'ale_warnings': 'lightline#ale#warnings',
 	\	'ale_errors': 'lightline#ale#errors',
-	\	'ycm_warnings': 'youcompleteme#GetWarningCount',
-	\	'ycm_errors': 'youcompleteme#GetErrorCount'
 	\	},
 	\ 'component_type': {
 	\	'ale_checking': 'left',
 	\	'ale_warnings': 'warning',
 	\	'ale_errors': 'error',
-	\	'ycm_warnings': 'warning',
-	\	'ycm_errors': 'error',
 	\	},
 	\ 'component_function': {
 	\	'gitbranch': 'Gitbranch',
@@ -139,41 +136,16 @@ Plug 'maximbaz/lightline-ale'
 Plug 'junegunn/fzf.vim' "depends on external command, installed by pacman
 Plug 'tpope/vim-endwise'
 Plug 'rstacruz/vim-closer'
-Plug 'rust-lang/rust.vim'
+"Plug 'rust-lang/rust.vim'
 "Plug 'noahfrederick/vim-hemisu'
-Plug 'freitass/todo.txt-vim'
-Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
+"Plug 'freitass/todo.txt-vim'
+"Plug 'ycm-core/YouCompleteMe', { 'do': '/usr/bin/python3 install.py' }
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-commentary'
 Plug 'ayu-theme/ayu-vim'
 call plug#end()
 
 set laststatus=2 " Enable lightline for each window
-" YouCompleteMe
-let g:ycm_language_server =
-            \[
-            \   {
-            \       'name': 'rust',
-            \       'cmdline': ['rust-analyzer'],
-            \       'filetypes': ['rust'],
-            \       'project_root_files': ['Cargo.toml'],
-            \   },
-            \   {
-            \       'name': 'ccls',
-            \       'cmdline': ['ccls'],
-            \       'filetypes': ['c', 'cpp', 'objc', 'objcpp'],
-            \       'project_root_files': ['.ccls-root', 'compile_commands.json']
-            \   },
-            \   {
-            \       'name': 'ruff',
-            \       'cmdline': ['ruff-lsp'],
-            \       'filetypes': ['python'],
-            \       'project_root_files': ['pyproject.toml', 'setup.py']
-            \   },
-            \]
-let g:ycm_rust_toolchain_root = '/usr'
-nnoremap gd :YcmCompleter GoTo<CR>
-nnoremap gr :YcmCompleter GoToReferences<CR>
 
 " rust.vim
 let g:rust_fold = 1
